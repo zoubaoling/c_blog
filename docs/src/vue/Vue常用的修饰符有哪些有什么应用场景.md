@@ -23,8 +23,12 @@
 #### 事件修饰符
 修饰符可以链式使用
 - .stop 阻止事件冒泡，event.stopPropagation
-- .prevent 阻止事件默认行为，event.preventDefault，比如：
-  - 
+- .prevent 阻止事件默认行为，event.preventDefault，比如：点击事件、表单提交事件、键盘事件等
+  - 点击事件：点击a标签、按钮点击事件等，可以阻止链接跳转或按钮的默认提交行为
+  - 表单提交事件：当用户提交表单时（type为submit的input或者button），浏览器会执行默认提交行为，刷新页面或发送表单数据到服务器
+  - 键盘事件：鼠标右键会显示菜单，可以阻止并自定义右键菜单；如果焦点在表单元素上（input textarea），敲击键盘会自动输入，可以阻止过滤数据输入
+
+  > preventDefault只会阻止默认行为，而不会阻止事件传播。事件处理函数中返回false也可以阻止默认行为，但是只对DOM0级模型有效（直接在元素上通过onClick等形式绑定事件处理）
 - .self 只有当event.target是当前自身元素触发事件，注意顺序
   - .prevent.self 会阻止所有点击
   - .self.prevent 会阻止元素自身的点击
