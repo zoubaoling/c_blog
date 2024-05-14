@@ -14,4 +14,5 @@
   - 合并DOM树和CSSOM树，生成渲染树Render Tree
   - Layout,计算各元素的尺寸、位置等几何属性
   - Paint，根据计算的几何属性，绘制在页面
+
    

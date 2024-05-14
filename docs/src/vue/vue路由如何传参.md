@@ -1,0 +1,21 @@
+## vue路由时怎么传参的？
+1. params传参
+  - this.$router.push({name:'index',params:{id:item.id}})
+  - this.$route.params.id
+2. 路由参数
+  - this.$router.push({name:'/index/${item.id}'})
+  - 路由配置 { path:'/index:id' }
+  - 获取：this.$route.params
+3. query传参（可以解决页面刷新参数丢失的问题）
+  - this.$router.push({ name:'index', query:{id:item.id}})
+  - 获取：this.$route.query
+4. 路由的state vue-router3.x开始
+  - this.$router.push({ name: '', state: {}})，不会在URL中显示
+  - 获取: history.state
+
+- vue2.x - vue-router3.x
+- vue3.x - vue-router4.x
+
+- [ ] state是否支持hash模式
+- [ ] statevue2的使用，支持什么模式
+- [ ] params 支持的vuerouter版本和VUe版本

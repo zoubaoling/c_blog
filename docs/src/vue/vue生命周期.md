@@ -47,3 +47,4 @@ vue3新增的仅在开发模式下使用的钩子函数
 ### created VS mounted
 - created组件实例创建完成，但是DOM未渲染；mounted DOM渲染完成，可以拿到DOM数据，都可以拿到属性和方法
 - 在mounted时使用接口可能存在页面闪动问题，但是如果需要对接口请求完对DOM进行处理，可以在mounted中，否则使用created，不会存在闪动问题
+- 请求数据与DOM无关，在created中，需要访问DOM，在mounted中
