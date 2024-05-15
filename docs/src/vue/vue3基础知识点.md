@@ -22,7 +22,7 @@ vue3 问题简要整理
 21. 模版中可以使用$emit
 22. 动态组件component is可以传注册的组件名和导入的组件对象
 23. 传给子组件的属性名、事件名模版中可以写为kebab-case
-24. <tr is="vue:blog-post-row"></tr>：自定义组blog-post-row作为html元素tr的内容，使用在原生HTML上时，is的值需要加前缀`vue:`才能解析为vue组件
+24. `<tr is="vue:blog-post-row"></tr>`：自定义组blog-post-row作为html元素tr的内容，使用在原生HTML上时，is的值需要加前缀`vue:`才能解析为vue组件
 25. 全局注册未使用的组件无法被tree-shaking，局部注册未使用的可以
 26. script setup中导入的组件直接在模版中使用，不需要注册
 27. 组件注册名格式：PascalCase 使用时也使用PascalCase格式

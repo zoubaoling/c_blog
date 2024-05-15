@@ -39,7 +39,3 @@ export const getSideBar = () => {
     return sidebar
   }, {})
 }
-
-// const getNavs = getSideBar('/css')
-const a = getSideBar()
-console.log(a['/ES6/'].items[4])

@@ -27,7 +27,7 @@ module.exports = {
 - clean-webpack-plugin: 每次构建前清理/删除构建文件夹，保证输出目录中只有用到的文件
 - mini-css-extract-plugin: 提取 CSS 到一个单独的文件中--MiniCssExtractPlugin.loader; new MiniCssExtractPlugin({ filename: '[name].css' })
 - copy-webpack-plugin: 复制文件或目录到构建目录-- from to globOptions.ignore; vue-cli中需要手动添加
-- DefinePlugin: 在编译时创建配置的全局对象，是一个webpack内置的插件，不需要安装--- new DefinePlugin({ BASE_URL: './' }) >>> <link rel="icon" href="<%= BASE_URL%>favicon.ico>"
+- DefinePlugin: 在编译时创建配置的全局对象，是一个webpack内置的插件，不需要安装--- new DefinePlugin({ BASE_URL: './' }) >>> `<link rel="icon" href="<%= BASE_URL%>favicon.ico>" />`
 - terser-webpack-plugin: 压缩JS，移除无用代码。
 - optimize-css-assets-webpack-plugin: 优化和压缩CSS资源
 - HotModuleReplacementPlugin: HMR

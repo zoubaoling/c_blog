@@ -6,7 +6,7 @@
   
 **使用**
 1. SVG可直接插入页面中，成为DOM一部分，然后用JS或CSS进行操作
-  - <svg></svg>
+  - `<svg></svg>`
 2. SVG可作为文件被引入
-  - <img src="pic.svg" />
+  - `<img src="" />`
 3. SVG可以转为base64引入页面

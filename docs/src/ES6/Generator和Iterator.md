@@ -79,5 +79,3 @@ const run = (task) {
 - async相当于*
 - await相当于yield
 只是可以自执行，内部调用next，形成了同步代码方式写异步代码
-
-- [ ] 手写版
