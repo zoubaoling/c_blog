@@ -3,9 +3,9 @@
 layout: home
 
 hero:
-  name: "blog"
-  text: "site"
-  tagline: tagline
+  name: "博客"
+  text: "简易前端面试题"
+  # tagline: ..
   actions:
     - theme: brand
       text: Markdown Examples
@@ -15,11 +15,13 @@ hero:
       link: /api-examples
 
 features:
-  - title: Feature A
+  - title: vue
     details: a
-  - title: Feature B
+  - title: css
     details: C
-  - title: Feature C
+  - title: es5/es6
     details: c
 ---
 
+## 开始
+features/link
