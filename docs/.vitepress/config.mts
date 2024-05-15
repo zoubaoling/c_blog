@@ -9,7 +9,7 @@ export default defineConfig({
   // 源目录配置，默认为/docs/*,与vitePpress配置目录同级
   srcDir: 'src',
   lastUpdated: true, // 是否使用 Git 获取每个页面的最后更新时间戳
-  // base: '/', // '/base/' 部署站点的base URL
+  base: '/blog/', // '/base/' 部署站点的base URL
   themeConfig: {
     search: {
       provider: 'local',
