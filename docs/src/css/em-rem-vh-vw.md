@@ -1,8 +1,6 @@
 ## 说说em/px/rem/vh/vw
-- 相对单位
-  - em/px/rem/vh/vw/%/vmin/vmax
-- 绝对单位
-  - px pt
+- 相对单位: em/px/rem/vh/vw/%/vmin/vmax
+- 绝对单位: px pt
 
 ### 区别
 1. px

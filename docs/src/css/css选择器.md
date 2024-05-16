@@ -1,7 +1,10 @@
 ## css选择器有哪些？优先级？哪些属性可以继承？
-CSS的特性：继承性、层叠性、优先级
+> CSS的特性：继承性、层叠性、优先级
+
 优先级：写CSS样式的时候，会给同一个元素添加多个样式，此时谁的权重高就显示谁的样式
+
 标签/伪元素、类/伪类/属性、行内样式、id、!important
+
 优先级顺序： !important > 行内样式 > id > 类/伪类/属性 > 标签/伪元素
 
 ### 选择器
@@ -30,14 +33,15 @@ CSS的特性：继承性、层叠性、优先级
 - 伪元素选择器: 选择元素中不是由单独HTML标签表示的部分----::before ::after ::first-letter ::first-line ::placeholder
   - ::placeholder input中text和textarea占位部分
 - 属性选择器:
-  - [attribute]: 带attribute属性的元素;
-  - [attribute=value]: attribute=value的元素，值只有value---attr="value"
-  - [attribute~=value]: 匹配带有一个attribute=value的元素或者带有一个attribute属性，其值至少有一个和value匹配的元素(多个值用空格分割)----attr="value value2"
-  - [attribute|=value]: 匹配一个attribute正好只等于value的元素(后接多个值不匹配)，或者第一个值是以value-开头，其后可接其他值;eg: attr="zh" attr="zh-cn en"
-  - ^=: 属性值字符串以value开头--class="abc"; $=: 属性值字符串以value结尾--attr="bca"; *=: 属性值字符串包括value
+  - `[attribute]`: 带attribute属性的元素;
+  - `[attribute=value]`: attribute=value的元素，值只有value---attr="value"
+  - `[attribute~=value]`: 匹配带有一个attribute=value的元素或者带有一个attribute属性，其值至少有一个和value匹配的元素(多个值用空格分割)----attr="value value2"
+  - `[attribute|=value]`: 匹配一个attribute正好只等于value的元素(后接多个值不匹配)，或者第一个值是以value-开头，其后可接其他值;eg: attr="zh" attr="zh-cn en"
+  - `^=`: 属性值字符串以value开头--class="abc"; `$=`: 属性值字符串以value结尾--attr="bca"; `*=`: 属性值字符串包括value
 
 ### 优先级
 写CSS样式的时候，会给同一个元素添加多个样式，此时谁的权重高就显示谁的样式
+
 优先级顺序： !important > 行内样式 > id > 类/伪类/属性 > 标签/伪元素
 
 **权重计算规则**
@@ -72,4 +76,5 @@ CSS的特性：继承性、层叠性、优先级
 4. 背景属性: 背景颜色 背景位置 背景图片等
 5. 轮廓样式: outline outline-style outline-width outline-color
 6. z-index
+7. overflow
 ...
