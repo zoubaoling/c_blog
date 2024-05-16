@@ -49,7 +49,10 @@ export default defineConfig({
       { text: 'Home', link: '/' },
       {
         text: 'HTML',
-        link: '/html/'
+        items: [
+          { text: 'HTML', link: '/html/' },
+          { text: 'CSS', link: '/css/' }
+        ]
       },
       {
         text: 'JavaScript',

@@ -15,12 +15,15 @@ hero:
       link: /api-examples
 
 features:
-  - title: vue
-    details: vue2和vue3相关问题
-    link: /vue/
+  - title: html/css
+    details: html和css相关内容
+    link: /html/
   - title: javascript
     details: ES5和ES6相关问题
     link: /js/
+  - title: vue
+    details: vue2和vue3相关问题
+    link: /vue/
   - title: 前端工程
     details: webpack、vite、http等相关内容
     link: /webpack/
