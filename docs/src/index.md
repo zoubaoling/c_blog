@@ -3,8 +3,8 @@
 layout: home
 
 hero:
-  name: "博客"
-  text: "简易前端面试题"
+  name: "小邹前端笔记"
+  text: "面试题..."
   # tagline: ..
   actions:
     - theme: brand
@@ -16,12 +16,20 @@ hero:
 
 features:
   - title: vue
-    details: a
-  - title: css
-    details: C
-  - title: es5/es6
-    details: c
+    details: vue2和vue3相关问题
+    link: /vue/
+  - title: javascript
+    details: ES5和ES6相关问题
+    link: /js/
+  - title: 前端工程
+    details: webpack、vite、http等相关内容
+    link: /webpack/
 ---
 
-## 开始
-features/link
+## 计划
+- [ ] TS
+- [ ] 算法
+- [ ] 手写题
+- [ ] 设计模式
+- [ ] React
+- [ ] 快捷键：Mac VScode等

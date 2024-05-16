@@ -4,7 +4,7 @@ const sidebar = await getSideBar()
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "前端面试题",
+  title: "小邹前端笔记",
   description: "前端面试题",
   // 源目录配置，默认为/docs/*,与vitePpress配置目录同级
   srcDir: 'src',
@@ -13,6 +13,37 @@ export default defineConfig({
   themeConfig: {
     search: {
       provider: 'local',
+      options: {
+        locales: {
+          root: {
+            translations: {
+              button: {
+                buttonText: '搜索文档',
+                buttonAriaLabel: '搜索文档'
+              },
+              modal: {
+                noResultsText: '无法找到相关结果',
+                displayDetails: '显示详细信息',
+                resetButtonTitle: '清除查询条件',
+                backButtonTitle: '返回搜索结果',
+                footer: {
+                  selectText: '选择',
+                  selectKeyAriaLabel: 'enter',
+                  navigateText: '切换',
+                  navigateUpKeyAriaLabel: 'up arrow',
+                  navigateDownKeyAriaLabel: 'down arrow',
+                  closeText: '关闭',
+                  closeKeyAriaLabel: 'escape'
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    docFooter: {
+      prev: '上一篇',
+      next: '下一篇'
     },
     nav: [
       { text: 'Home', link: '/' },
@@ -29,18 +60,23 @@ export default defineConfig({
       },
       { text: 'Vue', link: '/vue/index', activeMatch: '/vue/' },
       {
-        text: '构建工具', 
+        text: '构建工具',
         items: [
-          { text: 'webpack', link: '/webpack/'},
-          { text: 'http', link: '/http/'},
-          { text: 'vite', link: '/vite/'}
+          { text: 'webpack', link: '/webpack/' },
+          { text: 'http', link: '/http/' },
+          { text: 'vite', link: '/vite/' }
         ]
       },
       // { text: 'Examples', link: '/markdown-examples' },
     ],
     sidebar,
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
-    ]
+      { icon: 'github', link: 'https://github.com/zoubaoling/c_blog' }
+    ],
+    // 编辑
+    editLink: {
+      pattern: 'https://github.com/zoubaoling/c_blog/tree/main/docs/src/:path',
+      text: '在Github上编辑此页'
+    }
   }
 })
