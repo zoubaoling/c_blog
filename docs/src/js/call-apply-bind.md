@@ -9,12 +9,12 @@
 - 修改this指向：apply
 - 动态传参，可以多次传递
 - 兼容new关键字 暂不考虑
-```js{4}
+```js
 Function.prototype.myBind = function (context, ...bindArts) {
   if (typeof this !== 'function') throw new TypeError('Error')
   const fn = this
   return function Fn () {
-    // 考虑new,context > this instanceof Fn ? new fn(...arguments) : context
+    // 考虑new,context > this instanceof Fn ? this : context
     return fn.apply(context, [...bindArts, ...arguments])
   }
 }
@@ -24,7 +24,7 @@ Function.prototype.myBind = function (context, ...bindArts) {
 - 修改this指向，基于this原理，作为对象的方法调用，指向的是对象
 - 支持参数列表
 - 立即执行并返回结果
-```js{4}
+```js
 Function.prototype.myApply = function(context = window, ...args) {
   if (typeof this !== 'function') throw new TypeError('Error')
   const fn = Symbol('fn')
@@ -36,7 +36,7 @@ Function.prototype.myApply = function(context = window, ...args) {
 ```
 ### 实现call
 与apply主要区别是参数处理
-```js{4}
+```js
 Function.prototype.myApply = function(context = window, args = []) {
   if (typeof this !== 'function') throw new TypeError('Error')
   const fn = Symbol('fn')

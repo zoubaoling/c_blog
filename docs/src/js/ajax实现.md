@@ -1,11 +1,13 @@
 ## ajax是什么？怎么实现的？
-AJAX: Async Javascript and XML异步的JS和XML，创建交互式网页应用的网页开发技术，在不重新加载整个网页的前提下，与服务器交换数据并更新部分内容
-简单来说是：通过XmlHttpRequest(xhr)对象向服务器发送异步请求，然后从服务器拿到数据，最后通过JS操作DOM更新页面
-**实现过程：**
-  1. 创建XmlHttpRequest对象 xmh`new XMLHttpRequest()`
+`AJAX: Async Javascript and XML`异步的JS和XML，创建交互式网页应用的网页开发技术，在不重新加载整个网页的前提下，与服务器交换数据并更新部分内容
+
+简单来说是：通过`XmlHttpRequest(xhr)`对象向服务器发送异步请求，然后从服务器拿到数据，最后通过JS操作DOM更新页面
+
+### 实现过程
+  1. 创建XmlHttpRequest对象 xhr`new XMLHttpRequest()`
   2. 通过xmh对象里的open()方法和服务器建立连接`xml.open(method, url, [async: true][, user: null][, password: null])`
   3. 构建请求所需的数据，并通过xmh对象的send()发送给服务器`xml.send([body])`,get请求参数在URL中，body中为null
-  4. 通过xmh对象的onreadystatechange事件监听服务器和web的通信状态`xml.onreadystatechange``xml.readyState === 4` `xml.status` `xml.responseText`
+  4. 通过xmh对象的onreadystatechange事件监听服务器和web的通信状态`xml.onreadystatechange` `xml.readyState === 4` `xml.status` `xml.responseText`
   5. 接收并处理服务器响应的数据结果
   6. 把处理的数据更新到HTML页面上
 
@@ -19,7 +21,6 @@ function ajax ({ type = 'GET', url = '', data, success = () => (), fail: () => (
   const params = isGet ? null : data 
   xhr.open(type, realUrl, true)
   xhr.send(params)
-
   xhr.onreadystatechange = (e) => {
     if (xhr.readyState === 4) {
       const status = xhr.status
@@ -33,7 +34,7 @@ function ajax ({ type = 'GET', url = '', data, success = () => (), fail: () => (
 }
 ```
 
-### ajax fetch axios
+### ajax VS fetch VS axios
 - ajax
   - 基于原生XHR开发
   - 配置和调用方式混乱，使用不方便。事件异步模型不友好
@@ -47,15 +48,15 @@ function ajax ({ type = 'GET', url = '', data, success = () => (), fail: () => (
   - 不支持IE
 - axios
   - 基于promise封装的http客户端，用于浏览器和node.js，浏览器发起xhr,node端发起http请求
-  - 可以监测请求进度(xhr可以)和终止请求，自动转换JSON数据
   - 提供了广泛的请求和响应拦截
-  - 客户端支持抵御XSRF攻击
   - 浏览器兼容比较好，包括IE
   - 功能比较丰富
+  - 客户端支持抵御XSRF攻击
+  - 可以监测请求进度(xhr可以)和终止请求，自动转换JSON数据
   
 #### 取消请求
 - xhr: `xhr.abort()` status变为0，network中status变为Cancel
-- fetch和axios都可以使用AbortController API，axios的CancelToken已经废弃了, axios.0.22.0后支持AbortController
+- fetch和axios都可以使用`AbortController` API，axios的CancelToken已经废弃了, axios.0.22.0后支持AbortController
   - 构造实例: `const controller = new AbortController()`
   - 将只读属性Signal传到请求中，将控制器与请求相关联 `{signal: controller.signal}`
   - 使用`controller.abort(message)`取消，可以用try/catch捕获message错误信息
@@ -63,7 +64,7 @@ function ajax ({ type = 'GET', url = '', data, success = () => (), fail: () => (
 
 > AbortController可以取消单个或多个请求，与一个AbortController实例的signal属性关联的请求都会被取消
 
-axios取消请求封装示例
+::: details axios取消请求封装示例
 ```javascript
 // http.js
 import axios from 'axios';
@@ -89,7 +90,6 @@ http.interceptors.request.use(config => {
         cancelTokenMap.set(key, controller);
         requestCancellationStatus.set(key, false);  // 初始状态为未取消
     }
-
     return config;
 }, error => {
     return Promise.reject(error);

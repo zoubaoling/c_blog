@@ -4,9 +4,9 @@ JSON是一种轻量级的数据交换格式
   - 易于编写和理解，纯字符串形式的数据，它本身不提供任何方法
   - JSON数据存储在.json文件中，也可以把JSON数据以字符串的形式保存在数据库、Cookie中
   
-JS提供了JSON.parse() JSON.stringify()方法
+JS提供了`JSON.parse()` `JSON.stringify()`方法
 
 ### 使用
 - 定义接口，前后端通信
-- 配置文件，eg; package.json等
+- 配置文件，eg: package.json等
 - 数据存储

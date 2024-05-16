@@ -73,6 +73,7 @@ export default defineConfig({
       // { text: 'Examples', link: '/markdown-examples' },
     ],
     sidebar,
+    outline: 'deep',
     socialLinks: [
       { icon: 'github', link: 'https://github.com/zoubaoling/c_blog' }
     ],

@@ -2,12 +2,13 @@
 1. 都是处理异步请求的方式
 2. promise是ES6，async await 是ES7的语法, 是promise + generator的语法糖，它和promise都是非阻塞性的
 
-优缺点：
-1. promise是返回对象，要用then，catch方法去处理和捕获异常，并且书写方式是链式，容易造成代码重叠，不好维护，async await 是通过try catch进行捕获异常
-2. async await最大的优点就是能让代码看起来像同步一样，只要遇到await就会立刻返回结果，然后再执行后面的操作， 而promise.then()的方式返回，会出现请求还没返回，就执行了后面的操作
+**优缺点**
+1. promise是返回对象，要用then、catch方法去处理和捕获异常，并且书写方式是链式，容易造成代码重叠，不好维护，async await 是通过try catch进行捕获异常
+2. async await能让代码看起来像同步一样，只要遇到await就会立刻返回结果，然后再执行后面的操作，而promise.then()的方式返回，会出现请求还没返回，就执行了后面的操作
 
 ### await的实现
 async await是generator + promise 的语法糖
+::: details await实现
 ```js
 function* readFileWithGen() {
   try {    

@@ -1,11 +1,11 @@
 import fs from 'fs'
 import path from 'path'
 
-export const createEntryMd = (dir) => {
+export const createEntryMd = (dir, contents = []) => {
   const fullPath = path.join(dir, 'index.md')
-  if (!fs.existsSync(fullPath)) {
-    fs.writeFileSync(fullPath, '# 目录\n')
-  }
+    const lists = contents.reduce((content, { text, link }, index) => content + '\n' + `[${index+1}. ${text}](${link})\n`, '')
+    const renderContents = `# 目录 ${lists}`
+  fs.writeFileSync(fullPath, renderContents)
 }
 
 export const getDir = (dir = '', hasFile = true, baseUrl = '../src') => {
@@ -31,7 +31,9 @@ export const getSideBar = () => {
   const valuableDirs = dirs.filter(dir => !excludeDirs.includes(dir.text))
   return valuableDirs.reduce((sidebar, dir) => {
     const items = getDir(`/${dir.text}`)
-    createEntryMd(path.resolve(__dirname, '../src', dir.text))
+    const existIndex = items.findIndex(({ text }) => text === 'index')
+    if (existIndex !== -1) items.splice(existIndex, 1)
+    createEntryMd(path.resolve(__dirname, '../src', dir.text), items)
     sidebar[`/${dir.text}/`] = {
       text: dir.text,
       items: [{ text: 'index', link: `/${dir.text}/`}, ...items]
@@ -39,3 +41,4 @@ export const getSideBar = () => {
     return sidebar
   }, {})
 }
+getSideBar()
