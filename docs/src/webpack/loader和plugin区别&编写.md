@@ -1,7 +1,7 @@
 ## 说说Loader和Plugin的区别？编写Loader，Plugin的思路
 ### 区别
-- loader是一个转换器，将非JS文件转换成webpack能识别的文件，从而实现资源模块化；plugin是对loader功能的扩展
-plugin 赋予了 webpack 各种灵活的功能，例如打包优化、资源管理、环境变量注入等，目的是解决 loader 无法实现的其他事
+- loader是一个转换器，将非JS文件转换成webpack能识别的文件，从而实现资源模块化
+- plugin是对loader功能的扩展, plugin 赋予了webpack各种灵活的功能，例如打包优化、资源管理、环境变量注入等，目的是解决loader无法实现的其他事情
 - loader运行在打包文件之前，plugins在整个编译周期都起作用，在Webpack生命周期中会广播许多事件，Plugin可以监听这些事件，在合适的时机通过Webpack提供的API改变输出结果
 
 ### 编写
