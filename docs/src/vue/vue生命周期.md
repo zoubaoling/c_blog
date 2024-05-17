@@ -1,7 +1,7 @@
 ## 请描述下你对vue生命周期的理解？在created和mounted这两个生命周期中请求数据有什么区别呢
-
 ### 基本API
 组合式API中：beforeCreate和created在setup中，直接写逻辑即可
+
 vue3要用import导入，选项式写法是写在methods中
 | 生命周期函数 | 描述 | vue3 |
 | ---- | ---- | ---- |
@@ -13,6 +13,7 @@ vue3要用import导入，选项式写法是写在methods中
 | updated |	数据更新后调用，此时DOM已经完成更新，可以进行DOM操作| onUpdated |
 | beforeDestroy |	销毁前，可用于一些定时器或订阅的取消，实例仍然可用 | onBeforeUnmount |
 | destroyed |	组件已销毁，实例已经完全卸载 | onUnmounted |
+
 以上为基本的生命周期，2 -> 3的主要变化是 destroy -> unmount, script setup的写法是在前面加上on
 
 ### keep-alive生命周期
@@ -20,7 +21,7 @@ vue3要用import导入，选项式写法是写在methods中
 - deactivated | onDeactivated：keep-alive包裹的组件停用时调用
 
 ### errorCaptured | onErrorCaptured
-捕获来自子孙组件的错误
+捕获来自组件及子孙组件的错误
 
 ### onRenderTracked onRenderTriggered
 vue3新增的仅在开发模式下使用的钩子函数
@@ -28,11 +29,11 @@ vue3新增的仅在开发模式下使用的钩子函数
 - onRenderTriggered: 响应式依赖变更触发了组件渲染时调用
 
 ### 父子组件生命周期顺序
-父组件先初始化，执行到beforeMount,去活去父组件的虚拟DOM，然后进行patch
-  patch过程中如果子组件是组件类型，那么就会进入子组件的初始化流程，走到beforeMount
-    如果存在子组件一样进入子组件初始化流程
-    如果不存在则当前子组件mounted完
-  父组件mounted完
+父组件先初始化，执行到beforeMount,去获取父组件的虚拟DOM，然后进行patch
+  - patch过程中如果子组件是组件类型，那么就会进入子组件的初始化流程，走到beforeMount
+      - 如果存在子组件一样进入子组件初始化流程
+      - 如果不存在则当前子组件mounted完
+  - 父组件mounted完
 > 初始化、更新等过程中，父子组件是深度递归创建、更新子组件的过程
 1. 父组件 -> beforeMount(beforeUpdate beforeUnmount)
 2. 子组件 -> beforeMount(beforeUpdate beforeUnmount)

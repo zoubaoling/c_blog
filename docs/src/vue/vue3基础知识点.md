@@ -1,4 +1,4 @@
-vue3 问题简要整理
+## vue3 问题简要整理
 1. ref变量作为reactive的一个属性会被自动解包，不需要.value，否则会失去响应式
 2. ref变量作为reactive的数组或者set map集合中的一项，不会被自动解包，需要.value
 3. 模版中，只有顶级的ref才会被自动解包,{ name: ref('')}的name不是顶级的，不会被解包
