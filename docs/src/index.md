@@ -15,6 +15,9 @@ hero:
       link: /api-examples
 
 features:
+  - title: 面试参考网站
+    details: 面试参考网站
+    link: https://vue3js.cn/interview/
   - title: html/css
     details: html和css相关内容
     link: /html/
@@ -29,6 +32,7 @@ features:
     link: /webpack/
 ---
 
+---
 ## 计划
 - [ ] TS
 - [ ] 算法
@@ -36,3 +40,6 @@ features:
 - [ ] 设计模式
 - [ ] React
 - [ ] 快捷键：Mac VScode等
+- [ ] vitepress优化
+
+

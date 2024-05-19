@@ -34,10 +34,14 @@ export const getSideBar = () => {
     const existIndex = items.findIndex(({ text }) => text === 'index')
     if (existIndex !== -1) items.splice(existIndex, 1)
     createEntryMd(path.resolve(__dirname, '../src', dir.text), items)
-    sidebar[`/${dir.text}/`] = {
-      text: dir.text,
-      items: [{ text: 'index', link: `/${dir.text}/`}, ...items]
-    }
+    // 数组形式做侧会有多个分割线
+    sidebar[`/${dir.text}/`] = [
+      {
+        text: dir.text,
+        collapsed: true,
+        items: [{ text: 'index', link: `/${dir.text}/`}, ...items]
+      }
+    ]
     return sidebar
   }, {})
 }
