@@ -84,6 +84,10 @@ export default defineConfig({
         ]
       },
       {
+        text: '算法',
+        link: '/algorithm/'
+      },
+      {
         text: '外链',
         items: [
           {

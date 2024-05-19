@@ -37,3 +37,4 @@ ts
 
 grid
 
+get merge git rebase git squash
