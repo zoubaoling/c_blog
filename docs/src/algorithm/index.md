@@ -1,6 +1,8 @@
 # 目录 
-[1. Array](undefined)
+[1. baseArr.md](/algorithm/Array/baseArr)
 
-[2. LinkList](undefined)
+[2. index.md](/algorithm/Array/index)
 
-[3. Stack](undefined)
+[3. index.md](/algorithm/LinkList/index)
+
+[4. index.md](/algorithm/Stack/index)
