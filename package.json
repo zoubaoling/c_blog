@@ -4,7 +4,7 @@
   "description": "前端随笔记录",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
@@ -13,8 +13,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^24.0.0",
     "less": "^4.2.0",
-    "vitepress": "^1.1.4"
+    "vite": "^5.2.11",
+    "vitepress": "^1.1.4",
+    "vitest": "^1.6.0",
+    "vue": "^3.4.27"
   },
   "dependencies": {
     "markdown-it-task-lists": "^2.1.1"
