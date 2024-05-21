@@ -15,6 +15,8 @@ hero:
       link: /api-examples
 
 features:
+  - title: test
+    details: RandomTopic
   - title: 面试参考网站
     details: 面试参考网站
     link: https://vue3js.cn/interview/
@@ -31,7 +33,8 @@ features:
     details: webpack、vite、http等相关内容
     link: /webpack/
 ---
-
+---
+<RandomTopic />
 ---
 ## 计划
 - [ ] TS
@@ -41,5 +44,6 @@ features:
 - [ ] React
 - [ ] 快捷键：Mac VScode等
 - [ ] vitepress优化
+
 
 

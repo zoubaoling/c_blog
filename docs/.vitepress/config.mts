@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 import { getSideBar } from '../util/index'
 import MarkdownItTaskLists from 'markdown-it-task-lists'
+
 const sidebar = await getSideBar()
 
 // https://vitepress.dev/reference/site-config
@@ -13,7 +14,7 @@ export default defineConfig({
   base: '/c_blog/', // '/base/' 部署站点的base URL
   markdown: {
     config: (md) => {
-      md.use(MarkdownItTaskLists)
+      md.use(MarkdownItTaskLists);
     },
     container: {
       tipLabel: '提示',
@@ -88,6 +89,10 @@ export default defineConfig({
         link: '/algorithm/'
       },
       {
+        text: '设计模式',
+        link: '/设计模式/'
+      },
+      {
         text: '外链',
         items: [
           {
@@ -104,7 +109,8 @@ export default defineConfig({
           { 
             text: '优秀博客',
             items: [
-              { text: 'justin3go blog(vitepress)', link: 'https://justin3go.com/%E7%AC%94%E8%AE%B0/Vue%E7%9B%B8%E5%85%B3/01Vue3%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E8%A1%8C%E7%9A%84' }
+              { text: 'justin3go blog(vitepress)', link: 'https://justin3go.com/%E7%AC%94%E8%AE%B0/Vue%E7%9B%B8%E5%85%B3/01Vue3%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E8%A1%8C%E7%9A%84' },
+              { text: 'Xavi', link: 'https://xaviw.github.io/XaviDocs/%E5%B7%A5%E5%85%B7%E7%B3%BB%E5%88%97/VitePress%E6%90%AD%E5%BB%BA/%E5%9F%BA%E7%A1%80%E6%90%AD%E5%BB%BA.html' }
             ]
           }
         ]
