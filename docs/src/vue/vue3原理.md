@@ -2,7 +2,7 @@
 ### 核心模块
 1. `Reactive`: 响应式处理
    - 使用`track, trigger, effect`跟踪收集依赖并触发变化
-   - `proxy`代理, `get`: track, `trigger`: set
+   - `proxy`代理, `get`: track, `set`: trigger
    - `effect`: 用于组件渲染、computed数据、watch数据, 类似vue2的watch，添加数据响应时的副作用(重新渲染、重新计算、调用侦听回调函数)
 2. `Compiler`: 编译模版，将HTML编译成render/h渲染函数
 3. `mount`: 根据渲染函数生成VNode，将组件渲染挂载到web页面上
@@ -11,11 +11,11 @@
    - `patch`: 接收新旧两个VNode, 进行diff比对，进行局部更新
 
 #### 一个简单组件的执行
-1. createApp执行，初始化应用
-2. `baseCreateRnderer`, 创建更新渲染函数和渲染effect, 将组件更新渲染函数作为副作用传入渲染effect，方便后期更新
-3. 默认执行`effect.run`: 将`activeEffect`设置为this-渲染effect, 然后执行更新渲染函数(执行完毕弹出activeEffect)
-4. `Compiler`模版编译将HTML/Template编译成渲染函数
-5. 创建响应式数据在模版中绑定，并通过proxy进行代理
+1. vite编译阶段：`Compiler`模版编译将HTML/Template编译成渲染函数
+2. createApp执行，初始化应用
+3. `baseCreateRenderer`, 创建更新渲染函数和渲染effect, 将组件更新渲染函数作为副作用传入渲染effect，方便后期更新
+4. 默认执行`effect.run`: 将`activeEffect`设置为this-渲染effect, 然后执行更新渲染函数(执行完毕弹出activeEffect)
+5. 创建响应式数据在模版中绑定，并通过proxy进行代理 ？
 6. 渲染函数执行
    - 读取响应式数据，被get拦截，调用`track`进行依赖收集,将渲染effect-(副作用为更新渲染函数)添加进数据属性的依赖池里
    - `render`函数返回一个虚拟DOM节点
@@ -109,7 +109,7 @@ ref可以看作reactive的变形版本`{value: toReactive(value)}`，class类实
 ### diff
 #### 优化点
 1. 静态标记，更新过程中跳过对静态节点的比对
-2. 递归更新，更新一个节点会递归的更新子节点，高效处理嵌套结构，vue2时迭代的
+2. 递归更新，更新一个节点会递归的更新子节点，高效处理嵌套结构，vue2是迭代的
 3. 动态选择算法，根据节点的动态特征选择合适的比对算法，比如，只有属性变化没有子节点变化的节点，采用快速路径跳过子节点的比对
 4. fragments优化
 

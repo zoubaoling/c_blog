@@ -82,6 +82,8 @@ export const dailyTemperatures = (T: number[]): number[] => {
 }
 ```
 :::
+
+[Youtube解析](https://www.youtube.com/watch?v=4Gf7s8QqO-k)
 ::: tip
 JS实现栈，栈顶就是数组尾部，栈底就是数组头部，push是入栈,pop是出栈
 :::
