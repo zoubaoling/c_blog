@@ -50,3 +50,4 @@ get merge git rebase git squash
 8. 长亮科技
 9. 信雅达科技
 10. 中软国际
+11. 中澳通

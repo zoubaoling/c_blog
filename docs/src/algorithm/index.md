@@ -5,4 +5,6 @@
 
 [3. index.md](/algorithm/LinkList/index)
 
-[4. index.md](/algorithm/Stack/index)
+[4. main.md](/algorithm/Queue/main)
+
+[5. main.md](/algorithm/Stack/main)
