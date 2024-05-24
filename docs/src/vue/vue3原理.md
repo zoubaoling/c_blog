@@ -11,11 +11,11 @@
    - `patch`: 接收新旧两个VNode, 进行diff比对，进行局部更新
 
 #### 一个简单组件的执行
-1. vite编译阶段：`Compiler`模版编译将HTML/Template编译成渲染函数
+1. vite编译阶段：`Compiler`模版编译将HTML/Template编译成渲染函数, 将脚本编译成可执行函数(script setup会编译成setup函数)，编译样式并添加scoped处理
 2. createApp执行，初始化应用
 3. `baseCreateRenderer`, 创建更新渲染函数和渲染effect, 将组件更新渲染函数作为副作用传入渲染effect，方便后期更新
 4. 默认执行`effect.run`: 将`activeEffect`设置为this-渲染effect, 然后执行更新渲染函数(执行完毕弹出activeEffect)
-5. 创建响应式数据在模版中绑定，并通过proxy进行代理 ？
+5. mountComponent/setupComponent/setupComponent初始化，执行编译后的setup函数(包括业务代码内容)，根据setup函数内容创建响应式数据(proxy代理)、watch、computed等
 6. 渲染函数执行
    - 读取响应式数据，被get拦截，调用`track`进行依赖收集,将渲染effect-(副作用为更新渲染函数)添加进数据属性的依赖池里
    - `render`函数返回一个虚拟DOM节点
@@ -52,6 +52,7 @@ ref可以看作reactive的变形版本`{value: toReactive(value)}`，class类实
 ::: tip
 1. computed effect订阅其中使用的响应式数据，当响应式数据变化时重新执行computed effect的getter(_value)重新计算值--在第一次渲染计算值的时候会访问响应式数据
 2. 渲染effect订阅computed effect，computed更新时重新执行渲染effect的更新渲染函数--第一次渲染初始化时订阅
+3. computed变量在模版中使用时，才会计算其变量。渲染effect的更新函数中根据`effect.dirty(triggerComputed(dep.computed) > computed.value)`来判断执行`effect.run`
 :::
 
 #### watch
