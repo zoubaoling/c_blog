@@ -12,5 +12,3 @@
 [6. main.md](/algorithm/Stack/main)
 
 [7. main.md](/algorithm/Traverse/main)
-
-[8. tsconfig.json](/algorithm/tsconfig.json)

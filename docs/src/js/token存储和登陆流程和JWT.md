@@ -7,7 +7,7 @@
 2. 存cookie中，会自动发送，缺点数据大小有限制
      - 存储在浏览器中，跟随请求自动发送
      - 可以配置HttpOnly，提高安全性，cookie无法通过脚本访问
-     - 设置SameSite，减少CSRF跨站请求伪造的风险
+     - 设置SameSite，减少CSRF跨站请求伪造的风险(`Strict Lax None`是否自动携带cookie)
      - 持久存储，可以设置过期时间
      - 如果没有设置HttpOnly和SameSite，可能受到XSS和CSRF的攻击
      - 数据大小有限制
@@ -32,7 +32,7 @@
 JWT组成部分：头部Header,有效载荷Payload, 签名Signature，最终通过点`.`连接起来
   - Header: Token的类型- JWT，使用的哈希算法- RSA等
   - Payload: 需要传输的数据-用户ID、过期时间等，在JWT中透明，拥有JWT的人可以读取
-  - Signature: 防止数据篡改，头部和载荷都会被密钥进行签名（为了验证消息在传递过程中没有改变，使用header中的算法和一个密钥生成，最终可以比对确认
+  - Signature: 防止数据篡改，头部和载荷都会被密钥进行签名（为了验证消息在传递过程中没有改变，使用header中的算法生成，最终可以比对确认）
   
 每个部分都会使用base64编码
 

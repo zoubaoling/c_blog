@@ -17,10 +17,10 @@
 ### html解析、css、script
 1. css js等脚本的下载是并行的，无论脚本是否配置异步，下载不会相互阻塞
 2. css的下载不阻塞html的解析，是并行的，但是css的执行会
-  - 阻塞后续渲染，但不会直接阻塞HTML的解析，HTML会继续解析，并构建DOM，只是会在CSSOM构建完成再渲染
-  - 会阻塞后续js的执行，js可能依赖于CSSOM内容
+   - 阻塞后续渲染，但不会直接阻塞HTML的解析，HTML会继续解析，并构建DOM，只是会在CSSOM构建完成再渲染
+   - 会阻塞后续js的执行，js可能依赖于CSSOM内容
 3. script下载和执行会阻塞HTML解析，直到脚本下载并执行完
-3. script执行会阻塞后续资源的处理，包括css解析，因为JS可能会修改CSSOM和DOM
+4. script执行会阻塞后续资源的处理，包括css解析，因为JS可能会修改CSSOM和DOM
 
 ### 最佳实践：link标签要放在script前
 - 先加载CSS，确保JS执行前，样式已经就位，避免JS操作DOM时无样式内容，减少渲染过程的闪烁或者样式跳变
