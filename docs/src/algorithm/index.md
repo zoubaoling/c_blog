@@ -9,6 +9,8 @@
 
 [5. main.md](/algorithm/Queue/main)
 
-[6. main.md](/algorithm/Stack/main)
+[6. main.md](/algorithm/Sort/main)
 
-[7. main.md](/algorithm/Traverse/main)
+[7. main.md](/algorithm/Stack/main)
+
+[8. main.md](/algorithm/Traverse/main)

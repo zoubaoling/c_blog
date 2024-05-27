@@ -53,3 +53,5 @@ get merge git rebase git squash
 11. 中澳通
 12. 希优信息科技
 13. 馨橙科技
+14. 希优科技
+15. 华苏科技
