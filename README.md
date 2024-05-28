@@ -55,3 +55,6 @@ get merge git rebase git squash
 13. 馨橙科技
 14. 希优科技
 15. 华苏科技
+16. 亿达信息
+17. 智蓝云信
+18. 中金电信
