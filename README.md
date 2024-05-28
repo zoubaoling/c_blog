@@ -58,3 +58,4 @@ get merge git rebase git squash
 16. 亿达信息
 17. 智蓝云信
 18. 中金电信
+19. 德科信息
