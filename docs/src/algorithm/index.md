@@ -11,10 +11,12 @@
 
 [6. main.md](/algorithm/Queue/main)
 
-[7. 最长回文子串.md](/algorithm/RealQuestions/最长回文子串)
+[7. 从前中后序遍历序列构造二叉树.md](/algorithm/RealQuestions/从前中后序遍历序列构造二叉树)
 
-[8. main.md](/algorithm/Sort/main)
+[8. 最长回文子串.md](/algorithm/RealQuestions/最长回文子串)
 
-[9. main.md](/algorithm/Stack/main)
+[9. main.md](/algorithm/Sort/main)
 
-[10. main.md](/algorithm/Traverse/main)
+[10. main.md](/algorithm/Stack/main)
+
+[11. main.md](/algorithm/Traverse/main)
