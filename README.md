@@ -59,3 +59,4 @@ get merge git rebase git squash
 17. 智蓝云信
 18. 中金电信
 19. 德科信息
+20. 神州信息

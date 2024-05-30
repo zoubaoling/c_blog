@@ -13,10 +13,14 @@
 
 [7. 从前中后序遍历序列构造二叉树.md](/algorithm/RealQuestions/从前中后序遍历序列构造二叉树)
 
-[8. 最长回文子串.md](/algorithm/RealQuestions/最长回文子串)
+[8. 复制带随机指针的链表.md](/algorithm/RealQuestions/复制带随机指针的链表)
 
-[9. main.md](/algorithm/Sort/main)
+[9. 岛屿数量问题.md](/algorithm/RealQuestions/岛屿数量问题)
 
-[10. main.md](/algorithm/Stack/main)
+[10. 最长回文子串.md](/algorithm/RealQuestions/最长回文子串)
 
-[11. main.md](/algorithm/Traverse/main)
+[11. main.md](/algorithm/Sort/main)
+
+[12. main.md](/algorithm/Stack/main)
+
+[13. main.md](/algorithm/Traverse/main)
