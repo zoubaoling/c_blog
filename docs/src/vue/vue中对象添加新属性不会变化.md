@@ -17,3 +17,10 @@ vue2在数据初始化的时候遍历对象所有的属性，通过Object.define
 - 如果是添加少量的属性，可以采用set方法
 - 如果要添加大量的新属性，可以使用Object.assign
 - 不知道怎么办，可以使用$forceUpdate，但是一般此时就可以看看代码哪里是不是写的不合适了
+
+:::tip
+如果是数组：
+1. `Vue.set|vm.$set(arr, index, value)`
+2. 整个数组重新赋值
+3. `$forceUpdate`
+:::

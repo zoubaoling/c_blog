@@ -13,6 +13,11 @@
      - this.$router.push({ name: '', state: {}})，不会在URL中显示
      - 获取: history.state
 
+:::tip
+1. name和path不能同时使用
+2. params不能和path一起使用
+3. name + path; name + query; path + query
+:::
 - vue2.x - vue-router3.x
 - vue3.x - vue-router4.x
 

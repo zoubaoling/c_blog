@@ -21,7 +21,7 @@ vue3要用import导入，选项式写法是写在methods中
 - deactivated | onDeactivated：keep-alive包裹的组件停用时调用
 
 ### errorCaptured | onErrorCaptured
-捕获来自组件及子孙组件的错误
+捕获来自组件及子孙组件的错误(vue3新增的，替换vue2的`Vue.config.errorHandler`或者组件内部的`try-catch`)
 
 ### onRenderTracked onRenderTriggered
 vue3新增的仅在开发模式下使用的钩子函数

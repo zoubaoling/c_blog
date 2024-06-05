@@ -8,7 +8,7 @@
        - extensions默认是[.js, .json]，通过指定的类型从左往右查找解析对应文件。缩减扩展名列表和优化扩展名的顺序来减少不必要的文件系统访问，加快解析速度
      - 排除不需要处理的模块: module.noParser: /jquery|lodash/，配置的文件或模块不会进行依赖解析，需要确保排除的文件或库不依赖其他模块，否则会导致运行时错误
 3. 开发环境优化
-     - devtool: eval-source-map
+     - devtool: cheap-eval-source-map(`eval`: 不生成单独的sourcemap文件，模块末尾通过Data URL内联，会大但快; `cheap`: 只包含行，不包含列;)
      - 开启HMR，更新模块，不完全刷新devServer.hot:true--开发模式下默认开启
 4. 使用cache-loader
      - 开销较大的loader前添加cache-loader，可以将结果缓存到磁盘，提高第二次构建速度。（保存和读取缓存会有时间开销，所以只对开销较大的Loader使用）

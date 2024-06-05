@@ -87,10 +87,7 @@ import { mapActions } from 'vuex'
 const { action1, action2 } = mapActions(['action1', 'action2'])
 ```
 2. 使用组合式API
-```js{4}
-import { useStore } from 'vuex'
-import { ref } from 'vue'
-const store = useStore()
+```js
 import { useStore } from 'vuex';
 import { ref } from 'vue';
 const store = useStore();

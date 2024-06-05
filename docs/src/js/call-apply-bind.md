@@ -25,7 +25,7 @@ Function.prototype.myBind = function (context, ...bindArts) {
 - 支持参数列表
 - 立即执行并返回结果
 ```js
-Function.prototype.myApply = function(context = window, ...args) {
+Function.prototype.myApply = function(context = window, args = []) {
   if (typeof this !== 'function') throw new TypeError('Error')
   const fn = Symbol('fn')
   context[fn] = this
@@ -37,7 +37,7 @@ Function.prototype.myApply = function(context = window, ...args) {
 ### 实现call
 与apply主要区别是参数处理
 ```js
-Function.prototype.myApply = function(context = window, args = []) {
+Function.prototype.myApply = function(context = window, ...args) {
   if (typeof this !== 'function') throw new TypeError('Error')
   const fn = Symbol('fn')
   context[fn] = this

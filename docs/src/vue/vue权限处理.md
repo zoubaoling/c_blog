@@ -22,7 +22,7 @@ axios.interceptors.response.use(res => {
 路由也可以由后端接口返回，但是前后端配合更高，在路由导航守卫中获取，然后addRoutes
 
 ### 按钮权限
-- 直接通过v-if来判断展示，者当前用户的操作权限列表与当前操作等对比
+- 直接通过v-if来判断展示，将当前用户的操作权限列表与当前操作等对比
 - 使用自定义指令来处理，具体处理逻辑同上
 ```js
 el.parentNode?.removeChild(el)
