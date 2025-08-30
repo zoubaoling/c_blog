@@ -72,7 +72,8 @@ export default defineConfig({
         text: 'JavaScript',
         items: [
           { text: 'ES5', link: '/js/' },
-          { text: 'ES6', link: '/ES6/' }
+          { text: 'ES6', link: '/ES6/' },
+          { text: 'TypeScript', link: '/TypeScript/' }
         ]
       },
       { text: 'Vue', link: '/vue/index', activeMatch: '/vue/' },
@@ -80,8 +81,8 @@ export default defineConfig({
         text: '构建工具',
         items: [
           { text: 'webpack', link: '/webpack/' },
-          { text: 'http', link: '/http/' },
-          { text: 'vite', link: '/vite/' }
+          { text: 'http', link: '/http/' }
+          // { text: 'vite', link: '/vite/' }
         ]
       },
       {
