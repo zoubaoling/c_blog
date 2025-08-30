@@ -8,14 +8,24 @@
 优先级顺序： !important > 行内样式 > id > 类/伪类/属性 > 标签/伪元素
 
 ### 选择器
-- id选择器: `#box`
-- css选择器: `.box`
-- 标签选择器: `span`
-- 后代选择器: `#box .one`, 空格表示，父元素内部的所有.one元素--支持深层
-- 子选择器: '.one > .one_1', > 表示，父元素直接子元素中的.one_1元素--只支持直接子元素
-- 相邻同胞选择器: `.one + .two`, +表示，紧接着.one的.two元素
-- 群组选择器: `div, p`, 逗号拼接，选择div和p的所有元素
-- 伪类选择器: 选择处于特定状态或者条件的元素----:link :hover :focus :visited : active :first-child :last-child :first-of-type :disabled :checked :not() :empty :enabled
+#### 1. 基础选择器
+  - id选择器: `#box`
+  - 类选择器: `.box`
+  - 标签选择器: `span`
+#### 2. 组合选择器
+  - 后代选择器: `#box .one`, 空格表示，父元素内部的所有.one元素--支持深层
+  - 子选择器: '.one > .one_1', > 表示，父元素直接子元素中的.one_1元素--只支持直接子元素
+  - 相邻同胞选择器: `.one + .two`, +表示，紧接着.one的.two元素
+  - 群组选择器: `div, p`, 逗号拼接，选择div和p的所有元素
+#### 3. 属性选择器
+  - `[attribute]`: 带attribute属性的元素;
+  - `[attribute=value]`: attribute=value的元素，值只有value---attr="value"
+  - `[attribute~=value]`: 匹配带有一个attribute=value的元素或者带有一个attribute属性，其值至少有一个和value匹配的元素(多个值用空格分割)----attr="value value2"
+  - `[attribute|=value]`: 匹配一个attribute正好只等于value的元素(后接多个值不匹配)，或者第一个值是以value-开头，其后可接其他值;eg: attr="zh" attr="zh-cn en"
+  - `^=`: 属性值字符串以value开头--class="abc"; `$=`: 属性值字符串以value结尾--attr="bca"; `*=`: 属性值字符串包括value
+
+#### 4. 伪类选择器
+选择处于特定状态或者条件的元素----:link :hover :focus :visited : active :first-child :last-child :first-of-type :disabled :checked :not() :empty :enabled
   - :link ：选择未被访问的链接
   - :visited：选取已被访问的链接
   - :active：选择活动链接,鼠标按键激活
@@ -30,15 +40,11 @@
   - :nth-of-type(n): 选择父元素中的第 n 个具有相同类型的子元素。和nth-child类似，只是排列顺序是父元素中所有相同标签类型的兄弟元素(如果是标签，就是所有标签兄弟元素；如果是其他选择器，就是所有相同选择器的兄弟元素)
   - :nth-last-of-type(n): 选择父元素中的倒数第 n 个具有相同类型的子元素。
   :fist-child|last-child|nth-child|nth-last-child｜nth-of-type|nth-last-of-type:都是从指定选择器的父元素中根据其位置去查找指定元素（在其兄弟元素中的位置）
-- 伪元素选择器: 选择元素中不是由单独HTML标签表示的部分----::before ::after ::first-letter ::first-line ::placeholder
-  - ::placeholder input中text和textarea占位部分
-- 属性选择器:
-  - `[attribute]`: 带attribute属性的元素;
-  - `[attribute=value]`: attribute=value的元素，值只有value---attr="value"
-  - `[attribute~=value]`: 匹配带有一个attribute=value的元素或者带有一个attribute属性，其值至少有一个和value匹配的元素(多个值用空格分割)----attr="value value2"
-  - `[attribute|=value]`: 匹配一个attribute正好只等于value的元素(后接多个值不匹配)，或者第一个值是以value-开头，其后可接其他值;eg: attr="zh" attr="zh-cn en"
-  - `^=`: 属性值字符串以value开头--class="abc"; `$=`: 属性值字符串以value结尾--attr="bca"; `*=`: 属性值字符串包括value
 
+#### 5. 伪元素选择器
+选择元素中不是由单独HTML标签表示的部分----::before ::after ::first-letter ::first-line ::placeholder
+  - ::placeholder input中text和textarea占位部分
+  
 ### 优先级
 写CSS样式的时候，会给同一个元素添加多个样式，此时谁的权重高就显示谁的样式
 

@@ -12,3 +12,10 @@
 4. 提交gitignore更改: `git commit -m ''`
 5. 推送更改: `git push`
 6. 测试：再次build更新dist目录，修改gitignore文件，`changes`状态栏里随配置更改即时显隐dist内容
+
+## 终端nvm常见指令
+1. `nvm ls` 查看已经下载版本
+2. `nvm ls-remote` 查看可用版本号，LTS是长期稳定版本
+3. `nvm install --lts` 安装最新稳定LTS版本
+4. `nvm use --lts` 切换到LTS稳定版本
+5. `nvm alias default v20.0.0` 设置置顶版本为默认版本
