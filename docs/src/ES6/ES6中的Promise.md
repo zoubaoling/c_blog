@@ -17,7 +17,7 @@ Promise对象是一个构造函数，用来生成promise实例，接收两个参
 - reject将状态由pending > rejected
 
 **实例方法**
-- `then` 状态变更时的回调，第一个参数resolve状态的回调函数，第二个参数是reject状态的回调函数。then返回一个新的Promise实例，所以可以链式调用
+- `then` 状态变更时的回调，第一个参数fulfilled状态的回调函数，第二个参数是rejected状态的回调函数。then返回一个新的Promise实例，所以可以链式调用
 - `catch` 指定发生错误时的回调 reject状态,promise的错误有冒泡性质，直到被捕获。promise的错误不会传递到外面，只能在内部捕获
 - `finally` 不管状态怎么样，最后都会执行的操作
 

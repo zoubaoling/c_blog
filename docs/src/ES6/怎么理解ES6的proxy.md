@@ -25,7 +25,7 @@ const { proxy, revoke } = Proxy.revocable(target, handler)
 revoke()
 // revoke执行后，proxy不可用
 ```
-Reflect拥有proxy支持的代理行为的同名方法，可以改变一些默认行为，比如异常时不是报错，而是返回false
+Reflect提供了可拦截JS操作的方法，拥有proxy支持的代理行为的同名方法，可以改变一些默认行为，比如异常时不是报错，而是返回false
 
 ### 使用场景
 - 拦截和监听外部对对象的访问

@@ -3,7 +3,7 @@
 - apply和call是立即执行，bind是返回一个改变了this指向的函数
 - apply传参是数组，call是参数列表，都是一次性传入。bind是参数列表，可以多次传入(bind时和执行时，最终会将多次传入的参数拼接)
 
-> bind是永久改变，一个函数连续多次bind，绑定的this是第一次绑定的值，多次绑定无效
+> bind是永久改变，一个函数连续多次bind，绑定的this是第一次绑定的值，多次绑定无效; 但是参数可以不断叠加，类似函数柯里化
 
 ### 实现bind
 - 修改this指向：apply
@@ -37,7 +37,7 @@ Function.prototype.myApply = function(context = window, args = []) {
 ### 实现call
 与apply主要区别是参数处理
 ```js
-Function.prototype.myApply = function(context = window, ...args) {
+Function.prototype.myCall = function(context = window, ...args) {
   if (typeof this !== 'function') throw new TypeError('Error')
   const fn = Symbol('fn')
   context[fn] = this
