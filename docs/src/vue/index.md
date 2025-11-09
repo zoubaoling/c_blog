@@ -23,58 +23,60 @@
 
 [12. vue3基础知识点](/vue/vue3基础知识点)
 
-[13. vue3性能为什么比vue2好](/vue/vue3性能为什么比vue2好)
+[13. vue3开发问题记录](/vue/vue3开发问题记录)
 
-[14. vue3的tree-shaking](/vue/vue3的tree-shaking)
+[14. vue3性能为什么比vue2好](/vue/vue3性能为什么比vue2好)
 
-[15. vuexs刷新数据丢失](/vue/vuexs刷新数据丢失)
+[15. vue3的tree-shaking](/vue/vue3的tree-shaking)
 
-[16. vuex属性和使用场景](/vue/vuex属性和使用场景)
+[16. vuexs刷新数据丢失](/vue/vuexs刷新数据丢失)
 
-[17. vuex的响应式处理](/vue/vuex的响应式处理)
+[17. vuex属性和使用场景](/vue/vuex属性和使用场景)
 
-[18. vuex的辅助函数](/vue/vuex的辅助函数)
+[18. vuex的响应式处理](/vue/vuex的响应式处理)
 
-[19. vue中如何做强制刷新](/vue/vue中如何做强制刷新)
+[19. vuex的辅助函数](/vue/vuex的辅助函数)
 
-[20. vue中对象添加新属性不会变化](/vue/vue中对象添加新属性不会变化)
+[20. vue中如何做强制刷新](/vue/vue中如何做强制刷新)
 
-[21. vue中的key](/vue/vue中的key)
+[21. vue中对象添加新属性不会变化](/vue/vue中对象添加新属性不会变化)
 
-[22. vue双向绑定](/vue/vue双向绑定)
+[22. vue中的key](/vue/vue中的key)
 
-[23. vue实例挂载](/vue/vue实例挂载)
+[23. vue双向绑定](/vue/vue双向绑定)
 
-[24. vue性能优化和首屏优化](/vue/vue性能优化和首屏优化)
+[24. vue实例挂载](/vue/vue实例挂载)
 
-[25. vue权限处理](/vue/vue权限处理)
+[25. vue性能优化和首屏优化](/vue/vue性能优化和首屏优化)
 
-[26. vue生命周期](/vue/vue生命周期)
+[26. vue权限处理](/vue/vue权限处理)
 
-[27. vue的diff算法](/vue/vue的diff算法)
+[27. vue生命周期](/vue/vue生命周期)
 
-[28. vue的mixin](/vue/vue的mixin)
+[28. vue的diff算法](/vue/vue的diff算法)
 
-[29. vue的虚拟DOM](/vue/vue的虚拟DOM)
+[29. vue的mixin](/vue/vue的mixin)
 
-[30. vue组件和插件](/vue/vue组件和插件)
+[30. vue的虚拟DOM](/vue/vue的虚拟DOM)
 
-[31. vue自定义指令](/vue/vue自定义指令)
+[31. vue组件和插件](/vue/vue组件和插件)
 
-[32. vue路由hash模式和history模式](/vue/vue路由hash模式和history模式)
+[32. vue自定义指令](/vue/vue自定义指令)
 
-[33. vue路由如何传参](/vue/vue路由如何传参)
+[33. vue路由hash模式和history模式](/vue/vue路由hash模式和history模式)
 
-[34. vue路由拦截如何实现](/vue/vue路由拦截如何实现)
+[34. vue路由如何传参](/vue/vue路由如何传参)
 
-[35. vue通信方式](/vue/vue通信方式)
+[35. vue路由拦截如何实现](/vue/vue路由拦截如何实现)
 
-[36. vue错误处理](/vue/vue错误处理)
+[36. vue通信方式](/vue/vue通信方式)
 
-[37. vue项目部署404问题](/vue/vue项目部署404问题)
+[37. vue错误处理](/vue/vue错误处理)
 
-[38. 为什么Vue中的data属性是一个函数而不是一个对象](/vue/为什么Vue中的data属性是一个函数而不是一个对象)
+[38. vue项目部署404问题](/vue/vue项目部署404问题)
 
-[39. 如何封装可复用组件](/vue/如何封装可复用组件)
+[39. 为什么Vue中的data属性是一个函数而不是一个对象](/vue/为什么Vue中的data属性是一个函数而不是一个对象)
 
-[40. 组合式API和选项式API](/vue/组合式API和选项式API)
+[40. 如何封装可复用组件](/vue/如何封装可复用组件)
+
+[41. 组合式API和选项式API](/vue/组合式API和选项式API)

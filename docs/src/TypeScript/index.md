@@ -15,6 +15,10 @@
 
 [8. 08-类型推断和类型断言](/TypeScript/08-类型推断和类型断言)
 
-[9. 使用方案](/TypeScript/使用方案)
+[9. 09-d.ts](/TypeScript/09-d.ts)
 
-[10. 错误处理](/TypeScript/错误处理)
+[10. 使用方案](/TypeScript/使用方案)
+
+[11. 学习资源](/TypeScript/学习资源)
+
+[12. 错误处理](/TypeScript/错误处理)

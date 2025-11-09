@@ -1,12 +1,35 @@
-## 解释一下什么是json？
-JSON是一种轻量级的数据交换格式
-  - 独立于语言，易于解析，可以在不同应用程序和系统间交换数据，适合在网络中进行传输
-  - 易于编写和理解，纯字符串形式的数据，它本身不提供任何方法
-  - JSON数据存储在.json文件中，也可以把JSON数据以字符串的形式保存在数据库、Cookie中
-  
-JS提供了`JSON.parse()` `JSON.stringify()`方法
+## 解释一下什么是 JSON？
 
-### 使用
-- 定义接口，前后端通信
-- 配置文件，eg: package.json等
-- 数据存储
+> JavaScript Object Notation —— 一种轻量、文本式的数据交换格式。
+
+### 核心特点
+- 语言无关：几乎所有语言都内置或提供解析库，跨平台传输无障碍。
+- 结构简单：仅支持 `Object`、`Array`、字符串、数字、布尔、`null` 基本类型。
+- 可读性强：键值对形式，易写易懂，适合人机共读。
+- 纯数据：本质上是字符串，不包含方法或逻辑，可存入 `.json` 文件、数据库、Cookie。
+
+### 语法速览
+```json
+{
+  "name": "Alice",
+  "age": 28,
+  "skills": ["JS", "React"],
+  "active": true,
+  "address": null
+}
+```
+
+### 常用 API
+- `JSON.parse(str)`: 把 JSON 字符串转为 JS 对象，若格式错误会抛出异常。
+- `JSON.stringify(obj, replacer?, space?)`: 把对象序列化成 JSON 字符串，可通过 `replacer` 过滤字段，用 `space` 增加缩进便于调试。
+
+### 典型场景
+- **接口通信**：前后端返回/接收统一格式的数据。
+- **配置驱动**：如 `package.json`、`tsconfig.json`。
+- **数据持久化**：缓存、日志、离线数据存储。
+- **结构化日志**：后端或前端埋点上传统一的 JSON 事件。
+
+### 面试提示
+- JSON 与 JS 对象的区别：JSON 为字符串；JS 对象是运行时数据结构。
+- 注意循环引用、`undefined`、`Symbol` 等无法直接序列化。
+- 了解 `localStorage`、`fetch`、`FormData` 等与 JSON 搭配使用的常见套路。

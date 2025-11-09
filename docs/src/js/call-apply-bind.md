@@ -1,48 +1,51 @@
-## bind、call、apply 区别？如何实现一个bind?
-- 都可以用改变函数的this，第一个参数都是this，没有参数或者是null | undefined，就指向window
-- apply和call是立即执行，bind是返回一个改变了this指向的函数
-- apply传参是数组，call是参数列表，都是一次性传入。bind是参数列表，可以多次传入(bind时和执行时，最终会将多次传入的参数拼接)
+## `call` / `apply` / `bind` 速记
 
-> bind是永久改变，一个函数连续多次bind，绑定的this是第一次绑定的值，多次绑定无效; 但是参数可以不断叠加，类似函数柯里化
+> 面试重点：`this` 绑定方式、执行时机、参数差异、`bind` 的二次调用。
 
-### 实现bind
-- 修改this指向：apply
-- 动态传参，可以多次传递
-- 兼容new关键字 暂不考虑
+### 核心区别
+- **共同点**：第一个参数都是要绑定的 `this`。传 `null/undefined` 时，非严格模式退回全局对象（浏览器为 `window`）。
+- **`call`**：立即执行，参数按列表顺序传入：`fn.call(ctx, arg1, arg2)`。
+- **`apply`**：立即执行，参数打包数组：`fn.apply(ctx, [arg1, arg2])`。
+- **`bind`**：返回一个“永久绑定 `this` 和部分参数”的新函数，需要显式调用才执行，可多次传参，类似柯里化。
+
+> `bind` 的 `this` 绑定只生效第一次；后续再 `bind` 不会变，但参数会继续叠加。
+
+### `bind` 实现（含 `new` 兼容）
 ```js
-Function.prototype.myBind = function (context, ...bindArts) {
-  if (typeof this !== 'function') throw new TypeError('Error')
+Function.prototype.myBind = function (context, ...bindArgs) {
+  if (typeof this !== 'function') throw new TypeError('Target is not callable')
   const fn = this
-  return function Fn () {
-    // 考虑new,context > this instanceof Fn ? this : context
-    return fn.apply(context, [...bindArts, ...arguments])
+  function boundFn(...callArgs) {
+    const realThis = this instanceof boundFn ? this : context
+    return fn.apply(realThis, [...bindArgs, ...callArgs])
   }
+  boundFn.prototype = Object.create(fn.prototype) // 保留原型链
+  return boundFn
 }
 ```
 
-### 实现apply
-- 修改this指向，基于this原理，作为对象的方法调用，指向的是对象
-- 支持参数列表
-- 立即执行并返回结果
+### `apply` / `call` 手写思路
 ```js
-Function.prototype.myApply = function(context = window, args = []) {
-  if (typeof this !== 'function') throw new TypeError('Error')
-  const fn = Symbol('fn')
-  context[fn] = this
-  const result = context[fn](...args)
-  delete context[fn]
+Function.prototype.myApply = function (context = globalThis, args = []) {
+  if (typeof this !== 'function') throw new TypeError('Target is not callable')
+  const fnKey = Symbol('fn')
+  context[fnKey] = this
+  const result = context[fnKey](...args)
+  delete context[fnKey]
+  return result
+}
+
+Function.prototype.myCall = function (context = globalThis, ...args) {
+  if (typeof this !== 'function') throw new TypeError('Target is not callable')
+  const fnKey = Symbol('fn')
+  context[fnKey] = this
+  const result = context[fnKey](...args)
+  delete context[fnKey]
   return result
 }
 ```
-### 实现call
-与apply主要区别是参数处理
-```js
-Function.prototype.myCall = function(context = window, ...args) {
-  if (typeof this !== 'function') throw new TypeError('Error')
-  const fn = Symbol('fn')
-  context[fn] = this
-  const result = context[fn](...args)
-  delete context[fn]
-  return result
-}
-```
+
+### 面试提示
+- 先比较“执行时机 + 传参形式”，再点出 `bind` 可叠加参数、配合 `new` 使用时 `this` 指向最新实例。
+- 强调 `new` 绑定优先级最高：`new (fn.bind(obj))()` 中，`this` 会指向新实例而不是 `obj`。
+- 提醒现代替代方案：`Reflect.apply(fn, context, args)` 能统一 `call/apply` 的场景。

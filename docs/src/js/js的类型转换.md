@@ -1,51 +1,43 @@
-## 谈谈 JavaScript 中的类型转换机制
-代码运行时，在计算过程中，如果变量的类型与预期不符，就会触发类型转换
-- 强制转换/显示转换
-- 自动转换/隐式转换
+## JavaScript 类型转换速记
 
-### 强制转换
-- Number
-  - undefined > NaN
-  - null, false > 0, true > 1
-  - Symbol报错
-  - string,必须完全是数字才能转换为数字，否则为NaN；'32' > 32, '32a' > NaN,空字符串为0（含空格）
-  - object，单个数字元素的数组可以转为数字`[4] > 4`和Date转换为时间戳，其他都转为NaN, 空数组转为0
-- Boolean
-  - 转换为false的值：false, '', 0, +0, -0, undefined, null, NaN
-- String: 任意类型的值转换为字符串
-  - undefined > 'undefined', null > 'null', true > 'true', false > 'false'
-  - 数字型: 0 > '0', Infinity > 'infinity', -Infinity > '-Infinity', NaN > 'NaN'
-  - Symbol(key) -> 'Symbol(key)'
-  - Object: 先调用toPrimitive,再调用toNumber
-    - {} > '[object Object]'，对象会调用toString()
-    - [1, 2, 'x'] > '1, 2, x',数组会调用join()，默认逗号拼接
-    - new Set([1, 2]) > '[object Set]', 调用toString,Map|WeakMap|WeakSet同理
-    - new Function > 'function...'，返回源代码字符串
-    - new Date > 'Ar...'，调用toString()，返回日期和时间信息
-- parseInt: 逐个解析字符，不能转换的就停止,字符串和第一个元素是数值类型元素数组可以转换，其他都为NaN
-  - parseInt('22a') > 22
-  - parseInt('abc2' | [] | ['a', 2]) > NaN
-  - [2, 4, 'a'] > 2
-  - '' > NaN
+> 面试聚焦：强制 vs 隐式、常见运算触发点、转换陷阱。
 
-### 隐式转换
-在遇到运算符的时候，运算符两边类型不一致时会发生转换
-- 比较运算符：< > == != if while需要布尔值的地方
-- 算术运算符：+ - * / %
+### 显式（强制）转换
+- **Number(value)**
+  - `undefined → NaN`，`null → 0`，`true → 1`，`false → 0`。
+  - 字符串需完全满足数值格式：`'32' → 32`，`'32a' → NaN`，空字符串（含空格）→ `0`。
+  - 对象先走 `ToPrimitive`：数组 `[1] → 1`，空数组 `[] → 0`，`Date` 返回时间戳，其余多数 → `NaN`。
+  - `Symbol` 转换会抛 `TypeError`。
+- **String(value)**
+  - 原始类型按字面转换：`undefined → 'undefined'`、`true → 'true'`、`NaN → 'NaN'`。
+  - 对象先 `ToPrimitive` 再转字符串：对象默认 `toString()` → `'[object Object]'`；数组走 `join(',')`。
+- **Boolean(value)**
+  - falsy 列表：`false`、`0/-0/0n`、`''`、`null`、`undefined`、`NaN`。
+  - 其他皆为 `true`，包括空数组 `{}`、`[]`、函数、非空字符串等。
+- **parseInt(string, radix?)**
+  - 自左向右解析数值，遇到首个非法字符停止；无合法数字返回 `NaN`。
+  - 常见：`parseInt('22a') → 22`，`parseInt('abc') → NaN`，`parseInt([2,4,'a']) → 2`。
 
-1. 自动转为布尔值
-> 需要布尔值的地方会自动转为布尔值，会调用Boolean函数：if while for 逻辑非! 逻辑与&& 逻辑或|| 三元运算符条件部分
+### 隐式（自动）转换
+- **布尔语境**：`if` / `while` 条件、逻辑运算符 `!` `&&` `||`、三元 `?:`。调用内部的 `ToBoolean`，falsy 列表同上。
+- **算术运算符**
+  - `+`：存在任一字符串 → 字符串拼接；否则双方转成 `Number`。
+  - `-`、`*`、`/`、`%`：双方转成 `Number` 后计算。
+  - 一元 `+value` / `-value`：会尝试转成 `Number`。
+- **比较运算符**：`>` `<` `>=` `<=` 触发 `ToPrimitive` → `Number`；若有字符串按字典序比较。
+- **`==`**：使用抽象相等算法，包含多步转换（可联动 `==` 章节回答）。强调 `null` 只与 `undefined` 相等。
 
-只有几种会转为false,其他都为true: `null, undefined, 0, -0, +0, NaN, '', false`
+### `ToPrimitive` 提醒
+- 对象转换前会调用内部的 `@@toPrimitive` → `valueOf()` → `toString()`。
+- `Date` 是特例：优先 `toString()`，再 `valueOf()`。
 
-2. 自动转为字符串
-   
-现将复合类型转为原始类型，再将原始类型转为字符串，常用于` +`，如果存在字符串，就会进行字符串拼接; `模版字符串`
+### 常见坑位
+- `Number([]) → 0`，`Number({}) → NaN`，但 `[] == 0` 为 `true`（隐式转换）。
+- `'5' + 1 → '51'`；`'5' - 1 → 4` （减法触发数值转换）。
+- `Boolean('0')` 为 `true`，但 `Number('0')` 为 `0`。
+- `parseInt(0.0000008)` → `8`（先转字符串 `'8e-7'`，再按指数记法解析），面试常问。
 
-具体转换规则见上强制转换中的string型
-
-3. 自动转为数字
-
-算术运算符、一元运算符(`+'5'`)、比较运算符(< >)都会自动转为数值，除了+遇到字符时
-
-数值转换规则见上强制转换中的number型，注意undefined和null
+### 面试答题模板
+1. 先区分显式 VS 隐式，列举常用 API (`Number/parseInt/String/Boolean`) 与运算触发点。
+2. 提到 `ToPrimitive` 顺序、`Date` 特例、`Symbol` 转换异常。
+3. 用 2~3 个常见坑（`[] == ![]`、`'5' + 1` 等）收尾，展示理解深度。

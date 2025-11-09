@@ -1,45 +1,47 @@
-## typeof 和instanceof的区别
-都是用于判断数据类型
+## `typeof` vs `instanceof` vs `Object.prototype.toString`
 
-1. typeof返回变量的基本类型字符，instanceof返回的是一个布尔值，判断一个对象是否为一个构造函数的实例
-2. instanceof可以准确的判断引用类型的数据类型，但是不能用于基础数据类型
-3. typeof可以判断null除外(===object)的基本数据类型，引用类型中除了function类型，其他类型都返回`object`，无法准确判断
+> 面试核心：检测目标是什么、能识别哪些类型、常见陷阱。
 
-> instanceof 检测一个构造函数的prototype属性是否出现在某个实例对象的原型链上：object instanceof constructor
-```js{4}
-typeof 1 // 'number'
-typeof '1' // 'string'
-typeof undefined // 'undefined'
-typeof true // 'boolean'
-typeof Symbol // 'symbol'
-typeof null 'object'
-typeof [] {} // 'object'
-typeof new Function() // 'function'
+### 快速对比
+- **`typeof`**
+  - 返回字符串：`'number' | 'string' | 'boolean' | 'undefined' | 'symbol' | 'bigint' | 'function' | 'object'`。
+  - 能识别所有原始类型（`null` 除外，返回 `'object'`），函数返回 `'function'`。
+  - 其他引用类型（数组、正则、日期等）统一是 `'object'`，辨识度有限。
+- **`instanceof`**
+  - 返回布尔值：检测对象原型链上是否能找到构造函数的 `prototype`。
+  - 只能作用于对象（`null`、原始类型直接返回 `false`）。
+  - 受原型链影响，跨 iframe/realm 或手动改原型链时可能失真。
+- **`Object.prototype.toString.call()`**
+  - 统一返回 `[object Type]`，能区分绝大多数内建对象，包括 `Array`、`Date`、`RegExp`、`Null`、`Undefined`。
+  - 需要手动调用并解析字符串，是较可靠的通用方案。
+
+### 使用示例
+```js
+typeof 42              // 'number'
+typeof null            // 'object'  ← 经典陷阱
+[] instanceof Array    // true
+({}) instanceof Object // true
+Object.prototype.toString.call([])        // '[object Array]'
+Object.prototype.toString.call(null)      // '[object Null]'
+Object.prototype.toString.call(undefined) // '[object Undefined]'
 ```
-### instanceof实现
-```js{4}
-function myInstanceof = (left, right) {
-  if (typeof left !== 'object' || left === null) return false
+
+### 手写 `instanceof` 思路
+```js
+function myInstanceof(left, right) {
+  if ((typeof left !== 'object' && typeof left !== 'function') || left === null) {
+    return false
+  }
   let proto = Object.getPrototypeOf(left)
-  while () {
-    if (proto === null) return false
+  while (proto) {
     if (proto === right.prototype) return true
     proto = Object.getPrototypeOf(proto)
   }
+  return false
 }
 ```
-### Object.prototype.toString.call
-`Object.prototype.toString`统一返回格式'[object Xxx]'的字符串 -> Object.prototype.toString.call()
-- 其他类型必须使用call,否则统一返回`[object Object]`
-- [object `Object|Number|String|Boolean|Function|Array|Null|Undefined|RegExp|Date|HTMLDocument|Window`]
 
-**实现获取类型的方法**
-```js{4}
-function getType(obj) {
-  const type = typeof(obj)
-  if (type !== 'object') return type
-  return Object.prototype.toString().call(obj).replace(/^\[object (\S+)\]$/, '$1')
-  // \S匹配非空白字符，\s匹配空白字符：空格 制表符 换行符
-  // $1第一个捕获组
-}
-```
+### 面试答题模板
+1. 先说明各自定位：`typeof` 判原始类型，`instanceof` 判原型链关系，`toString` 判具体内建对象。
+2. 再点出坑位：`typeof null === 'object'`、跨 iframe `instanceof` 失效、自定义原型链可能被篡改。
+3. 给实践建议：日常先用 `typeof` 兜底原始类型，判数组等复杂对象时用 `Array.isArray` 或 `Object.prototype.toString.call`；遇到继承结构再考虑 `instanceof`。
