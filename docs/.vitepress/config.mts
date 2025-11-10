@@ -61,6 +61,7 @@ export default defineConfig({
     },
     nav: [
       { text: 'Home', link: '/' },
+      { text: '每日复习', link: '/review/' },
       {
         text: 'HTML',
         items: [

@@ -53,7 +53,7 @@ export const getDir = (dir = '', hasFile = true, deep = false, baseUrl = '../src
 }
 
 export const getSideBar = () => {
-  const excludeDirs = ['program_topic', 'assets']
+  const excludeDirs = ['program_topic', 'assets', 'review']
   const dirs = getDir('', false)
   const valuableDirs = dirs.filter(dir => !excludeDirs.includes(dir.text))
   return valuableDirs.reduce((sidebar, dir) => {

@@ -13,6 +13,9 @@ hero:
     - theme: alt
       text: API Examples
       link: /api-examples
+    - theme: brand
+      text: 每日随机复习
+      link: /review/
 
 features:
   - title: test

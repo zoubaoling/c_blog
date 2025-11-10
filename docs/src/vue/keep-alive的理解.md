@@ -4,8 +4,8 @@ keep-alive是vue的内置组件，在组件切换过程中将状态保存在内�
 使用keep-alive包裹动态组件时，会缓存不活动的组件实例而不是销毁
 
 ## 属性
-1. `include`: 正则或字符串，名称匹配的组件会缓存
-2. `exclude`: 正则或字符串，名称匹配的组件不会被缓存
+1. `include`: 正则或字符串或数组，名称匹配的组件会缓存
+2. `exclude`: 正则或字符串或数组，名称匹配的组件不会被缓存
 3. `max`: 最多缓存的组件个数
    
 名称查找首先会找组件的name,如果name不可用，会去匹配局部注册名称（父组件中components中注册的key）
@@ -30,7 +30,7 @@ keep-alive是vue的内置组件，在组件切换过程中将状态保存在内�
 }
 // app.vue
 <div id="app" class='wrapper'>
-  <keep-alive>
+  <keep-alive :include="['UserList', 'UseProfile']">
       <!-- 需要缓存的视图组件 --> 
       <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
