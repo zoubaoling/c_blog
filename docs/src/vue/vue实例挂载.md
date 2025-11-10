@@ -1,59 +1,38 @@
-## vue的实例挂载过程
+## Vue 实例挂载流程
 
-### new Vue的过程
-1. 初始化生命周期、事件中心（初始化的是父组件在模板中使用v-on或@注册的监听子组件内触发的事件）、渲染函数
-2. beforeCreate
-3. 初始化: injection > state(props > methods > data > computed > watch) > provide
-4. created
-5. $mount 挂载: 编译$mount > 运行$mount（模版编译 -> 模版挂载）
+### 一句话概览
+- `new Vue(options)` → 初始化内部能力 → 执行 `beforeCreate/created` → `$mount` 把模板转为渲染函数 → 首次 `render → patch` 挂载 DOM → `mounted`。
 
-### 模版编译阶段
-1. 编译$mount: 将template中的原生HTML和非原生HTML内容找出来，经过一系列逻辑处理成渲染函数render，就是编译
-2. template -> 模版编译 -> render -> VNode -> patch -> 视图
-   1. 模版编译：template -> 模版编译 -> render
-   2. 虚拟DOM：VNode -> patch -> 视图
+### 生命周期顺序（创建阶段）
+1. **初始化**：注入组件实例的生命周期、事件、渲染函数占位。
+2. **beforeCreate**：此时 props/data 尚未可访问。
+3. **初始化状态**：注入 `injection → props → methods → data → computed → watch → provide`。
+4. **created**：数据/方法已经就绪，但 DOM 未生成。
+5. **$mount**：进入编译与挂载阶段。
 
-#### 模版编译
-1. `parse模版解析`，将template解析生成AST语法树
-     - parse: parseHTML -> parseText parseFilters
-        - 文本
-        - 注释<!-- -->
-        - DOCTYPE <! DOCTYPE html>
-        - 开始标签
-        - 结束标签
-     - 标签根据内容去匹配，使用正则匹配，匹配完创建AST节点。
-     - 文本解析是将parseHTML解析出来的文本内容进一步处理，文本中如果存在变量提取出来二次加工
-2. `optimize优化阶段`：遍历AST语法树，将静态节点打上标记 
-     - 找出静态节点和静态根节点并打上标记 -> 在patch阶段，静态节点就不需要比对
-     - 模版解析过程中会对节点判断添加type值
-3. `generate代码生成阶段`：将AST语法树转换成渲染函数 
-     - 递归遍历根据tag data children生成对应的字符串`h(tag, data, children)`，再将对应字符串转换为可执行的方法
+### `$mount` 编译流程
+- 若传入 `render` 函数，直接使用。
+- 否则处理 `template`：
+  - 模板可来自字符串、选择器（`#app`）、或 `el` 元素的 `outerHTML`。
+  - Vue 会警告不允许挂载到 `document.body/html`。
+- 模板编译三步（只在运行时编译版本发生）：
+  1. **parse**：把 template 解析成 AST，识别标签、属性、文本、插值。
+  2. **optimize**：找出静态节点并标记，后续 diff 可跳过。
+  3. **generate**：把 AST 转成 `render` 函数字符串，再生成真正的渲染函数。
 
+### 挂载执行（运行时）
+1. 调用 `mount.call(vm)`，实际执行 `Vue.prototype.$mount`。
+2. `mountComponent(vm, el)`：若无 `render` 返回空 VNode。
+3. 触发 `beforeMount` 钩子。
+4. 定义 `updateComponent = () => vm._update(vm._render())`：
+   - `_render()`：执行渲染函数，生成最新 VNode。
+   - `_update()`：调用平台 `patch`，把 VNode 同步到真实 DOM。
+5. 创建渲染 watcher：`new Watcher(vm, updateComponent, ...)`。
+   - 首次执行触发 `_render → _update`，生成 DOM，触发 `mounted`。
+   - 后续依赖变更时 watcher 重新运行，进入 `beforeUpdate → updated`。
 
-### 模版挂载阶段
-vm.$mount：编译时 > 运行时
-> beforeMount > 创建vm.$el并替换el > mounted
-
-1. vm.$mount方法--编译时,模版编译
-     1. 不能挂载到body和html中(document.body document.documentElement)
-     2. options.render存在，处理传入的template
-     3. 处理template
-          - 存在templaet,解析vue模版文件
-              - 如果是字符串类型且以#开头，作为ID获取元素
-              - 如果是节点，直接获取节点内容innerHTML
-              - 否则抛出警告，template不合法
-          - 不存在template，根据el选择器获取template outerHTML
-     4. 编译解析template，得到render函数
-          - 将template解析成ast语法树ast tree
-          - ast tree转换成render语法字符串
-          - render语法字符串转换成render方法
-2. 调用mount.call() -> Vue.prototype.$mount(public mount method)方法--运行时，模版挂载
-     1. 执行mountComponent
-     2. 无render，生成空的虚拟节点
-     3. callHook: beforeMount(模版编译解析完成，但是未挂载)
-     4. 定义updateComponent更新渲染视图的方法:vm._update(vm._render())-lifecycleMixin中定义的
-          - render: 生成虚拟节点VNode
-          - update: `patch`节点,VNode转换为真实的DOM，并更新到页面
-     5. 创建监听器`new Watcher(vm, updateComponent,...)`，开启对模版中数据的监控,组件数据变化执行updateComponent函数，并触发 `beforeUpdate`钩子函数
-          - updateComponent执行使用的数据会被getter拦截，将当前watcher实例添加到数据依赖列表中
-          - 数据变化时通知依赖列表里的依赖，依赖（watcher实例）接收到通知后，执行回调函数，更新视图，触发beforeUpdate
+### 面试速记要点
+- 记住钩子触发顺序：`beforeCreate → created → beforeMount → mounted`（以及数据更新时的 `beforeUpdate/updated`）。
+- 模板编译是 `template → AST → render`，挂载是 `VNode → patch → DOM`。
+- 渲染 watcher 负责把响应式数据变化转换成视图更新。
+- 运行时版本需编译模板，构建版本可提前将模板编译成 render 函数以提升性能。

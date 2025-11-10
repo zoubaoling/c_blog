@@ -1,90 +1,116 @@
-## 你有写过自定义指令吗？自定义指令的应用场景有哪些?
-### 定义
-以`v-`开头的行内属性都是指令，不同的指令可以实现不同的功能，可以实现功能复用，一般适用于涉及到需要修改底层DOM时使用
+## 自定义指令怎么写？哪些场景适用？
 
-### 使用
-- v-directname 直接使用，不传递值、参数、修饰符等
-- v-direct:arg 以冒号形式传递参数
-- v-direc.modify 以点运算符形式添加修饰符，支持多个
-- v-direct="" 给指令赋值
+### 一句话回答
+当需要直接操作 DOM 或复用 DOM 级逻辑时，可以封装自定义指令（`v-xxx`）来复用。例如自动聚焦、输入过滤、权限控制等。Vue 3 依然支持指令，但有了组合式 API，常把“数据逻辑”放到 Hook，把“DOM 操作”交给指令。
 
-#### 指令注册
-1. 全局注册
-   
-vue2: Vue.directive
-```js
-Vue.directive('name', { inserted () {}})
-Vue.directive('name',() => {})
-```
+---
 
-vue3: app.directive
+### 典型使用场景
+- **聚焦/选择文本**：`v-focus`、`v-select`，表单组件挂载后自动处理输入。
+- **权限/展示控制**：根据用户权限隐藏或禁用某些按钮（`v-permission`）。
+- **点击外部（click-outside）**：用于关闭弹窗、菜单。
+- **防抖/节流**：对按钮点击或输入事件做 DOM 层的节流。
+- **拖拽、滚动、Intersection Observer**：原生 API 交互封装。
+- **第三方库桥接**：如给图片懒加载、光标定位等。
+
+---
+
+### 注册方式对比
+| 注册 | Vue 2 | Vue 3 |
+| --- | --- | --- |
+| 全局 | `Vue.directive('name', def)` | `const app = createApp(); app.directive('name', def)` |
+| 局部（Options API） | `directives: { focus: def }` | 同上 |
+| `<script setup>` | — | 直接声明 `const vFocus = { mounted(el) { ... } }` |
+| 使用 | `v-name` / `v-name:arg` / `v-name.mod` / `v-name="value"` | 写法相同 |
+
+> 定义时不要带 `v-` 前缀；对象写法可提供多个生命周期钩子，函数写法默认等价于 `mounted + updated`。
+
+---
+
+### 生命周期钩子对照
+| Vue 2 | Vue 3 | 触发时机 |
+| --- | --- | --- |
+| `bind` | `created` | 指令第一次绑定到元素（组件还未挂载） |
+| `inserted` | `beforeMount` / `mounted` | 元素插入 DOM 前 / DOM 后，可安全访问元素 |
+| `update` | `beforeUpdate` / `updated` | 绑定值更新，`oldValue` 可用；需自行判断是否真正变化 |
+| `componentUpdated` | — | Vue 3 合并为 `updated` |
+| `unbind` | `beforeUnmount` / `unmounted` | 指令解绑，清理事件或定时器 |
+
+> 大多数 DOM 操作放在 `mounted` / `updated`；销毁逻辑放在 `beforeUnmount` / `unmounted`。
+
+---
+
+### 钩子函数参数
+- `el`：真实 DOM 节点，可直接操作。
+- `binding`：当前绑定的配置对象
+  - `value` / `oldValue`：指令传入的新旧值
+  - `arg`：参数（`v-copy:success="..."` → `arg === 'success'`）
+  - `modifiers`：修饰符对象（`v-debounce.enter.once` → `{ enter: true, once: true }`）
+  - Vue 3 特有 `instance`（组件实例 proxy）、`dir`（指令定义对象）
+- `vnode`：当前虚拟节点，调试用。
+- `prevNode`：上一次的虚拟节点（仅更新钩子）。
+
+> 若需要在钩子之间共享数据，可用 `el._xxx = ...` 或 `el.dataset.xxx`.
+
+---
+
+### 常见示例
 ```js
-const app = createApp()
-app.directive('name', { inserted () {}})
-app.directive('name',() => {})
-```
-2. 局部注册
-   
-vue2和vue3选项式模式: 在选项directives中声明
-```js
-directives: {
-  focus () {}
-  focus: {
-    inserted () {}
-  }
-}
-```
-vue3 script setup模式时：以v开头的驼峰式变量
-```js
+// v-focus：自动聚焦
 const vFocus = {
-  mounted: () => {}
+  mounted(el) {
+    el.focus()
+  },
+}
+
+// v-permission：根据权限隐藏元素
+const vPermission = {
+  mounted(el, { value, instance }) {
+    const hasAuth = instance.$store.getters.perms.includes(value)
+    if (!hasAuth) el.parentNode?.removeChild(el)
+  },
+}
+
+// v-debounce：按钮防抖
+const vDebounce = {
+  created(el, { value, arg = 300 }) {
+    let timer
+    el.addEventListener('click', (...args) => {
+      clearTimeout(timer)
+      timer = setTimeout(() => value.apply(null, args), Number(arg) || 300)
+    })
+  },
+  beforeUnmount(el) {
+    // 清理事件
+  },
 }
 ```
-**定义形式**
-- 名称不包括v-前缀
-- 定义时可以以包括生命周期钩子函数的对象形式，也可以是函数形式，只需要在`inserted`和`update`中执行行为时(vue2)；`mounted`和`updated`(vue3)
+> Vue 3 `<script setup>` 中直接 `const vFocus = ...`，模板里 `v-focus` 即可使用。
 
-### 钩子函数
-vue2: `bind inserted update componentUpdate unbind`
+---
 
-vue3: `created beforeMount mounted beforeUpdate updated beforeUnmount unmounted`
+### 最佳实践 & 注意事项
+- **优先考虑组合式函数/组件复用**：只有需要直接操作 DOM 或跨组件复用 DOM 逻辑时才写指令。
+- **必须清理副作用**：事件、定时器、MutationObserver 等要在 `beforeUnmount`/`unmounted` 清理。
+- **避免逻辑过重**：指令只关心 DOM 操作，业务数据处理放在组件或 store。
+- **使用 key 和参数时加判断**：在 `update` 中比较 `binding.value !== binding.oldValue`，防止重复执行。
+- **在多根组件上使用**：Vue 3 中指令只作用于根节点；多根组件会被忽略并警告。
+- **TypeScript**：可为指令定义类型 `Directive<HTMLElement, ValueType>`。
 
-`vue2`
-- bind: 只调用一次，当指令绑定到元素时，可以进行初始化
-- inserted: 元素插入到父节点时调用（只保证插入到父节点中，不一定插入到文档流中）
-- update: 组件的`VNode`变化时调用，子组件的`VNode`可能没更新，可以比较前后值忽略不必要的更新
-- componentUpdate: 组件和子组件的`VNode`都更新完调用
-- unbind: 只调用一次，指令和元素解绑时调用
+---
 
-`vue3`
-- created: 组件setup执行后，beforeMount前执行，可以操作属性和方法，模版未被编译并挂载
-- beforeMount: 元素插入到DOM前
-- mounted: 绑定元素的父组件和他自己的所有子组件挂载完调用
-- beforeUpdate: 绑定元素的父组件更新前
-- update: 绑定元素的父组件和其所有的子组件更新后调用
-- beforeUnmount: 绑定元素的父组件卸载前调用
-- unmounted: 绑定元素的父组件卸载后调用
+### 面试答题模板
+1. **定义**：指令用于封装 DOM 级别的复用逻辑，如焦点、权限、点击外部等。
+2. **注册方式**：全局/局部；Vue 3 支持在 `<script setup>` 中直接定义 `const vXxx = ...`。
+3. **生命周期**：`mounted/updated/unmounted` 最常用，提及两代命名差异。
+4. **钩子参数**：`el`、`binding.value/arg/modifiers`、`instance`（Vue 3）。
+5. **实践经验**：举一个常用指令案例，强调清理、可复用性。
+6. **Vue 3 差异**：滤掉 `ComponentUpdated`，增加 `instance`、支持多根组件等。
 
-#### 钩子函数参数
-`el binding vnode preVnode`
-1. el: 绑定到的DOM元素，可以操作, 其他均不可操作，如果要共享信息，可以在元素的dataset(data-开头)中实现
-2. binding: 对象，vue2和vue3有区别
-   - 相同属性：
-     - value: 绑定的值
-     - oldValue: 绑定的前一个值，只在`update` `componentUpdated` | `beforeUpdate` `updated`中可用
-     - arg: 参数，可以是动态[arg] `v-focus:foo -> arg: foo`
-     - modifiers: 修饰符对象 `v-focus.foo.bar -> { foo: true, bar: true }`
-   - 不同属性：`vue2: name expression; vue3: instance dir`
-     - name: 指令名，不包括v-前缀
-     - expression: 字符串形式的指令表达式 `v-focus="name"` -> name
-     - instance: 使用指令的实例组件, `Proxy{}`
-     - dir: 指定的定义对象，`{beforeMount: f}`
-3. vnode: 当前虚拟节点
-4. preVnode: 更新前的虚拟节点
-参数只有一个，需要在修饰符前面声明，否则会被检测为修饰符
-### 组件中使用
-作用于组件的根节点，如果存在多个根节点，指令会被忽略并抛出警告
+---
 
-### 常见自定义指令
-`v-highlight v-debounce v-throttle v-clickout `
+### 参考资源
+- [官方指令指南（Vue 3）](https://cn.vuejs.org/guide/reusability/custom-directives.html)
+- [Vue 2 自定义指令](https://v2.cn.vuejs.org/v2/guide/custom-directive.html)
+- 常用库：`@vueuse/gesture`（手势）、`vue3-click-away`（点击外部）等。
 

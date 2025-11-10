@@ -1,10 +1,11 @@
 ## computed VS watcher
+computed 是计算属性，watch 是监听属性
+
 watch和computed都是以vue的依赖追踪机制为基础的，当依赖的某个数据变化时，其相关的数据相应变化或执行相应处理方法
 
-computed 是计算属性，watch 是监听属性
 ### 使用上
-1. computed基于data和props中的数据进行计算，当其依赖数据变化时才会重新计算，否则取缓存的计算结果；watch基于props、data和computed中的数据，监听的数据变化时，进行其他处理
-2. computed 具有缓存性，只有当其依赖的数据发生变化时，才会重新计算；watch不存在缓存性，监听数据变化时，直接触发响应操作
+1. computed基于data和props中的数据进行计算；watch基于props、data和computed中的数据，监听的数据变化时，进行其他处理
+2. computed 具有缓存性，只有当其依赖的数据发生变化时，才会重新计算，否则取缓存；watch不存在缓存性，监听数据变化时，直接触发响应操作
 3. computed不支持异步操作，watch支持异步操作，可以在数据变化时进行异步处理业务逻辑操作
 4. computed定义的计算属性，和data类似，以属性访问的形式访问。watch是监听数据变化时，执行对应的回调函数
 5. computed可以是一个包含get和set的对象，或者一个函数-默认作为get方法，必须有一个返回值；watch接受一个包括handler的对象或者回调函数，回调函数两个参数分别为新值和旧值

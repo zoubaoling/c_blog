@@ -1,51 +1,45 @@
-## 请描述下你对vue生命周期的理解？在created和mounted这两个生命周期中请求数据有什么区别呢
-### 基本API
-组合式API中：beforeCreate和created在setup中，直接写逻辑即可
+## 请描述你对 Vue 生命周期的理解？created 和 mounted 请求数据的区别？
 
-vue3要用import导入，选项式写法是写在methods中
-| 生命周期函数 | 描述 | vue3 |
-| ---- | ---- | ---- |
-| beforeCreate | 执行时组件实例还未创建，通常用于插件开发中执行一些初始化任务(生命周期)，数据观测和事件等未初始化 | setup |
-| created	| 创建实例后调用，此时实例的数据观测、事件等已经初始化完成，各种数据可以使用，常用于异步数据获取 initState: props methods data computed watch | setup |
-| beforeMount	| 挂载实例之前调用，此时模板已经编译完成，但是还未挂载到DOM| onBeforeMounted |
-| mounted	| 挂载实例后调用，此时实例已经挂载到DOM，可以进行DOM操作| onMounted |
-| beforeUpdate | 数据更新之前调用，可用于获取更新前各种状态 | onBeforeUpdate |
-| updated |	数据更新后调用，此时DOM已经完成更新，可以进行DOM操作| onUpdated |
-| beforeDestroy |	销毁前，可用于一些定时器或订阅的取消，实例仍然可用 | onBeforeUnmount |
-| destroyed |	组件已销毁，实例已经完全卸载 | onUnmounted |
+### 面试速记
+- 生命周期 = 组件从创建 → 挂载 → 更新 → 卸载的完整旅程。
+- Vue 2 选项式中使用 `beforeCreate` 等钩子；Vue 3 组合式用 `setup` + `onMounted` 等函数。
+- `created` 数据已可用但 DOM 未生成；`mounted` DOM 已渲染，适合需要操作页面的逻辑。
 
-以上为基本的生命周期，2 -> 3的主要变化是 destroy -> unmount, script setup的写法是在前面加上on
+### 全量生命周期速览
+| 阶段 | 时机 | 常见用途 | Vue 3 Hook |
+| --- | --- | --- | --- |
+| beforeCreate | 组件实例刚初始化，`data/props` 未就绪 | 少用，插件初始化 | (已合并进 `setup`) |
+| created | 实例创建完成，数据/方法可访问，DOM 尚未挂载 | 发起接口请求、初始化定时器 | `setup()` 本身 |
+| beforeMount | 模板编译完成，即将挂载真实 DOM | 查看编译后的虚拟 DOM | `onBeforeMount` |
+| mounted | 初次渲染结束，DOM 已可操作 | DOM 查询、第三方库初始化 | `onMounted` |
+| beforeUpdate | 响应式数据即将更新 DOM | 记录更新前状态 | `onBeforeUpdate` |
+| updated | DOM 更新完毕 | 依赖最新 DOM 的操作（避免频繁） | `onUpdated` |
+| beforeDestroy/destroyed | 即将销毁 / 已销毁组件 | 清理定时器、事件监听 | `onBeforeUnmount` / `onUnmounted` |
 
-### keep-alive生命周期
-- activated | onActivated：keep-alive包裹的组件激活时调用
-- deactivated | onDeactivated：keep-alive包裹的组件停用时调用
+> Vue 3 将 `destroy` 重命名为 `unmount`，并强调在 `setup` 中集中编写逻辑。
 
-### errorCaptured | onErrorCaptured
-捕获来自组件及子孙组件的错误(vue3新增的，替换vue2的`Vue.config.errorHandler`或者组件内部的`try-catch`)
+### keep-alive 相关钩子
+- `activated` / `onActivated`：被 `<keep-alive>` 缓存的组件重新激活。
+- `deactivated` / `onDeactivated`：被缓存的组件被切换到背景时调用。
+- 适合保存表单、Tab 页等状态，避免重复创建。
 
-### onRenderTracked onRenderTriggered
-vue3新增的仅在开发模式下使用的钩子函数
-- onRenderTracked: 组件渲染时追踪到响应式依赖时调用
-- onRenderTriggered: 响应式依赖变更触发了组件渲染时调用
+### 其它常见场景钩子
+- `errorCaptured` / `onErrorCaptured`：捕获子组件抛出的错误，Vue 3 推荐使用。
+- `onRenderTracked` / `onRenderTriggered`：开发模式下调试响应式依赖（定位性能问题）。
+- 路由守卫（`beforeRouteEnter` 等）和自定义指令（`beforeMount`、`updated`、`unmounted`）也与生命周期紧密相关。
 
 ### 父子组件生命周期顺序
-父组件先初始化，执行到beforeMount,去获取父组件的虚拟DOM，然后进行patch
-  - patch过程中如果子组件是组件类型，那么就会进入子组件的初始化流程，走到beforeMount
-      - 如果存在子组件一样进入子组件初始化流程
-      - 如果不存在则当前子组件mounted完
-  - 父组件mounted完
-> 初始化、更新等过程中，父子组件是深度递归创建、更新子组件的过程
-1. 父组件 -> beforeMount(beforeUpdate beforeUnmount)
-2. 子组件 -> beforeMount(beforeUpdate beforeUnmount)
-3. 子组件 -> mounted(updated unmmounted)
-4. 父组件 -> mounted(updated unmounted)
+1. 父：`beforeCreate → created → beforeMount`
+2. 子：`beforeCreate → created → beforeMount → mounted`
+3. 父：`mounted`
+4. 更新/销毁阶段同理，父钩子会包裹住子钩子。
 
-#### 注意事项
-1. 生命周期钩子函数中的this指向的是引用的实例，不可以用箭头函数
-2. setup是唯一可以使用组合式钩子函数的地方，其他地方会运行时错误。但是可以写在其他地方，执行时上下文是setup即可
+### created vs mounted 请求数据的选择
+- **created**：数据已就绪但 DOM 未挂载；适合与视图无关的接口请求，能减少首屏闪烁。
+- **mounted**：DOM 已渲染，可以获取元素尺寸、调用第三方库。适合接口结果需要同步操作 DOM（如图表渲染、滚动定位）。
+- 实践建议：优先在 `created/setup` 中拉数据，如果要在接口完成后操作 DOM，再放到 `mounted` 或接口回调中处理。
 
-
-### created VS mounted
-- created组件实例创建完成，但是DOM未渲染；mounted DOM渲染完成，可以拿到DOM数据，都可以拿到属性和方法
-- 在mounted时使用接口可能存在页面闪动问题，但是如果需要对接口请求完对DOM进行处理，可以在mounted中，否则使用created，不会存在闪动问题
-- 请求数据与DOM无关，在created中，需要访问DOM，在mounted中
+### 注意事项
+- 生命周期钩子里的 `this` 指向组件实例；不要使用箭头函数（组合式 API 除外）。
+- `setup` 是组合式 API 唯一合法注册生命周期钩子的地方；如果封装在函数中，需要确保在 `setup` 调用。
+- 使用 `<script setup>` 时，直接调用 `onMounted(() => {})` 即可注册钩子，无需显式导入组件实例。

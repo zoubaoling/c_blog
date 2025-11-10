@@ -29,4 +29,30 @@ filters: {
 ### 应用场景
 常用于文本格式化：时间格式化、数字格式化、单位转换等
 
+### 示例
+
+```vue
+<template>
+  <span>{{ price | currency('¥') }}</span>
+  <span>{{ price | currency2('€', 0, true) }}</span>
+</template>
+
+<script>
+export default {
+  data: () => ({ price: 99.99 }),
+  filters: {
+    currency(value, symbol = '$') {
+      return symbol + Number(value).toFixed(2)
+    },
+    currency2(value, symbol = '$', decimals = 2, withThousands = false) {
+      const formatted = Number(value || 0).toFixed(decimals)
+      return withThousands
+        ? symbol + formatted.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+        : symbol + formatted
+    }
+  }
+}
+</script>
+```
+
 [解析参考](https://vue3js.cn/interview/vue/filter.html#%E5%9B%9B%E3%80%81%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90)

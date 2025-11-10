@@ -15,68 +15,72 @@
 
 [8. vue.observable](/vue/vue.observable)
 
-[9. vue3+ts](/vue/vue3+ts)
+[9. vue2-vue3-diff](/vue/vue2-vue3-diff)
 
-[10. vue3VSvue2](/vue/vue3VSvue2)
+[10. vue3+ts](/vue/vue3+ts)
 
-[11. vue3原理](/vue/vue3原理)
+[11. vue3VSvue2](/vue/vue3VSvue2)
 
-[12. vue3基础知识点](/vue/vue3基础知识点)
+[12. vue3原理](/vue/vue3原理)
 
-[13. vue3开发问题记录](/vue/vue3开发问题记录)
+[13. vue3基础知识点](/vue/vue3基础知识点)
 
-[14. vue3性能为什么比vue2好](/vue/vue3性能为什么比vue2好)
+[14. vue3开发问题记录](/vue/vue3开发问题记录)
 
-[15. vue3的tree-shaking](/vue/vue3的tree-shaking)
+[15. vue3性能为什么比vue2好](/vue/vue3性能为什么比vue2好)
 
-[16. vuexs刷新数据丢失](/vue/vuexs刷新数据丢失)
+[16. vue3的tree-shaking](/vue/vue3的tree-shaking)
 
-[17. vuex属性和使用场景](/vue/vuex属性和使用场景)
+[17. vuexs刷新数据丢失](/vue/vuexs刷新数据丢失)
 
-[18. vuex的响应式处理](/vue/vuex的响应式处理)
+[18. vuex和pinia的区别](/vue/vuex和pinia的区别)
 
-[19. vuex的辅助函数](/vue/vuex的辅助函数)
+[19. vuex属性和使用场景](/vue/vuex属性和使用场景)
 
-[20. vue中如何做强制刷新](/vue/vue中如何做强制刷新)
+[20. vuex的响应式处理](/vue/vuex的响应式处理)
 
-[21. vue中对象添加新属性不会变化](/vue/vue中对象添加新属性不会变化)
+[21. vuex的辅助函数](/vue/vuex的辅助函数)
 
-[22. vue中的key](/vue/vue中的key)
+[22. vue中如何做强制刷新](/vue/vue中如何做强制刷新)
 
-[23. vue双向绑定](/vue/vue双向绑定)
+[23. vue中对象添加新属性不会变化](/vue/vue中对象添加新属性不会变化)
 
-[24. vue实例挂载](/vue/vue实例挂载)
+[24. vue中的key](/vue/vue中的key)
 
-[25. vue性能优化和首屏优化](/vue/vue性能优化和首屏优化)
+[25. vue双向绑定](/vue/vue双向绑定)
 
-[26. vue权限处理](/vue/vue权限处理)
+[26. vue实例挂载](/vue/vue实例挂载)
 
-[27. vue生命周期](/vue/vue生命周期)
+[27. vue性能优化和首屏优化](/vue/vue性能优化和首屏优化)
 
-[28. vue的diff算法](/vue/vue的diff算法)
+[28. vue权限处理](/vue/vue权限处理)
 
-[29. vue的mixin](/vue/vue的mixin)
+[29. vue生命周期](/vue/vue生命周期)
 
-[30. vue的虚拟DOM](/vue/vue的虚拟DOM)
+[30. vue的diff算法](/vue/vue的diff算法)
 
-[31. vue组件和插件](/vue/vue组件和插件)
+[31. vue的mixin](/vue/vue的mixin)
 
-[32. vue自定义指令](/vue/vue自定义指令)
+[32. vue的虚拟DOM](/vue/vue的虚拟DOM)
 
-[33. vue路由hash模式和history模式](/vue/vue路由hash模式和history模式)
+[33. vue组件和插件](/vue/vue组件和插件)
 
-[34. vue路由如何传参](/vue/vue路由如何传参)
+[34. vue自定义指令](/vue/vue自定义指令)
 
-[35. vue路由拦截如何实现](/vue/vue路由拦截如何实现)
+[35. vue路由hash模式和history模式](/vue/vue路由hash模式和history模式)
 
-[36. vue通信方式](/vue/vue通信方式)
+[36. vue路由如何传参](/vue/vue路由如何传参)
 
-[37. vue错误处理](/vue/vue错误处理)
+[37. vue路由拦截如何实现](/vue/vue路由拦截如何实现)
 
-[38. vue项目部署404问题](/vue/vue项目部署404问题)
+[38. vue通信方式](/vue/vue通信方式)
 
-[39. 为什么Vue中的data属性是一个函数而不是一个对象](/vue/为什么Vue中的data属性是一个函数而不是一个对象)
+[39. vue错误处理](/vue/vue错误处理)
 
-[40. 如何封装可复用组件](/vue/如何封装可复用组件)
+[40. vue项目部署404问题](/vue/vue项目部署404问题)
 
-[41. 组合式API和选项式API](/vue/组合式API和选项式API)
+[41. 为什么Vue中的data属性是一个函数而不是一个对象](/vue/为什么Vue中的data属性是一个函数而不是一个对象)
+
+[42. 如何封装可复用组件](/vue/如何封装可复用组件)
+
+[43. 组合式API和选项式API](/vue/组合式API和选项式API)

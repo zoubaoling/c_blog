@@ -1,112 +1,121 @@
-## 常用的辅助函数
-> mapState | mapGetters | MapMutations | mapActions ｜ createNamespacedHelpers
+## Vuex 常用辅助函数
 
-### 使用
-1. `mapState`
-  
-将vuex中state属性映射到computed中,通过数组方式或对象方式
+> `mapState`、`mapGetters`、`mapMutations`、`mapActions`、`createNamespacedHelpers`
+
+### 1. `mapState`
+将 `state` 映射到计算属性，支持数组和对象写法。
 ```js
 computed: {
-  ...mapState(['userinfo', 'routedata']),
-  ...mapState({
-    userinfo: state => state.userinfo
-  })
+  ...mapState(['userInfo', 'routeData']),
+  ...mapState({ currentUser: (state) => state.userInfo }),
 }
 ```
-2. `mapActions`
-  
-将vuex中的action映射到methods中，数组或对象形式
+
+### 2. `mapGetters`
+把 `getters` 映射到 `computed`。
+```js
+computed: {
+  ...mapGetters(['doneTodos', 'todoCount']),
+}
+```
+
+### 3. `mapMutations`
+把 `mutations` 映射到 `methods`，适合同步修改。
 ```js
 methods: {
-  ...mapActions(['getUserInfo', 'getList]),
-  ...mapActions({
-    // 别名
-    getUserInfoNew: 'getUserInfo'
-  })
+  ...mapMutations(['setUser']),
+  ...mapMutations({ setName: 'setUserName' }),
 }
 ```
-等价于
+
+### 4. `mapActions`
+映射 `actions` 到 `methods`，可处理异步。
 ```js
 methods: {
-  getUserInfoNew () {
-    this.$store.dispatch('getUserInfo')
-    // this.$store.dispatch|state|getters|commit|dispatch
-  }
+  ...mapActions(['getUserInfo', 'getList']),
+  ...mapActions({ reload: 'getUserInfo' }),
 }
 ```
-3. `mapMutatioins`
 
-将vuex的mutation映射到methods中，与mapActions类似，只是是简单的数据处理，不涉及异步操作
-
-4. `mapGetters`
-
-将vuex的getters映射到computed中，与mapState类似
-
-5. `modules + namespaced`
-
-每一个模块相当于一个小型的vuex, 都有各自的state action getter mutation等
-
-开启命名空间`namespaced: true`，根据名称访问每个空间module
-
-不同模块的同名函数不互相影响
-
-命名空间声明
+### 5. 命名空间（`modules + namespaced`）
 ```js
-{
-  state: {},
+const store = new Vuex.Store({
   modules: {
-    person: {
-      namespaced: true
-      state: {},
-      mutations: {}
-      ...
-    }
-  }
-}
-```
-通过辅助函数使用
-```js
-mapState('空间名称', ['属性1', '属性2'])
-mapState('空间名称', {
-  'newName': 'oldName'
+    user: {
+      namespaced: true,
+      state: () => ({ info: null }),
+      getters: { isLogin: (state) => !!state.info },
+      actions: { fetchInfo: async ({ commit }) => {} },
+      mutations: { setInfo: (state, payload) => (state.info = payload) },
+    },
+  },
 })
 ```
-6. `createNamespacedHelpers`
-  
-模块化的vuex中创建命名空间辅助函数
+
+使用带命名空间的辅助函数：
 ```js
-const { mapState } = createNamespacedHelpers('空间模块名称')
+computed: {
+  ...mapState('user', ['info']),
+  ...mapGetters('user', ['isLogin']),
+}
+methods: {
+  ...mapActions('user', ['fetchInfo']),
+}
 ```
 
-## vue3使用
-### 使用
-1. 使用mapState等辅助函数
+### 6. `createNamespacedHelpers`
 ```js
-// script setup模式下不用单独导出
-import { mapActions } from 'vuex'
-const { action1, action2 } = mapActions(['action1', 'action2'])
+const { mapState, mapActions } = createNamespacedHelpers('user')
+computed: {
+  ...mapState(['info']),
+}
+methods: {
+  ...mapActions(['fetchInfo']),
+}
 ```
-2. 使用组合式API
+
+### Vue 2 vs Vue 3 使用差异
+
+| 项目 | Vue 2 写法 | Vue 3 写法 |
+| --- | --- | --- |
+| 安装 | `Vue.use(Vuex)` | `const app = createApp(App); app.use(store)` |
+| 组件使用 | 选项式：`computed` + `mapState`、`methods` + `mapActions` | 仍可用选项式；组合式中可 `const store = useStore()` + `computed(() => store.state.xxx)` |
+| 脚手架 | Vue CLI 默认集成 Vuex | Vite 模板默认不带，需要手动安装或改用 Pinia |
+
+#### Vue 2 组件示例
 ```js
-import { useStore } from 'vuex';
-import { ref } from 'vue';
-const store = useStore();
-// 访问 state || computed
-const count = ref(store.state.count);
-
-// 访问 mutation
-const increment = () => {
-    store.commit('increment');
-};
-// 访问 action
-const fetchData = () => {
-    store.dispatch('fetchData');
-};
-
+import { mapState, mapActions } from 'vuex'
+export default {
+  computed: { ...mapState(['count']) },
+  methods: {
+    ...mapActions(['incrementAsync']),
+  },
+}
 ```
-## 含义
-- state 可以看作数据库，响应式
-- actions 可以看作controller层，做数据的业务逻辑，一般异步
-- mutations 可以看作model层，做数据的增删改查操作，一般同步
-  
-[题目参考](https://fe.ecool.fun/topic/b3e35cf9-1939-4c79-8415-8168c5532779?orderBy=updateTime&order=desc&tagId=14)
+
+#### Vue 3 组合式示例
+```vue
+<script setup>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+
+const store = useStore()
+const count = computed(() => store.state.count)
+const increment = () => store.commit('increment')
+const fetch = () => store.dispatch('incrementAsync')
+</script>
+
+<template>
+  <button @click="increment">Count: {{ count }}</button>
+  <button @click="fetch">Async Increment</button>
+</template>
+```
+
+### Vuex 各角色速记
+- **state**：全局响应式数据源。
+- **getters**：基于 state 的派生数据。
+- **mutations**：同步修改 state。
+- **actions**：异步逻辑或批处理，最终提交 mutation。
+- **modules**：拆分业务域，可配命名空间隔离。
+
+面试提示：可以先列核心辅助函数，再补充 Vue 2 / Vue 3 写法差异，并解释各角色职责，最后提一句 Pinia 是 Vue 3 官方推荐的轻量替代。

@@ -1,9 +1,22 @@
-## vuex在什么场景会去使用？属性有哪些？
-1. state: 存储变量
-2. getters: state的计算属性
-3. mutations: 提交更新数据的方法
-4. actions: 和mutations差不多，通过commit提交mutations来修改数据，可以包括异步操作
-5. modules: 模块化vuex
+## Vuex 在什么场景会使用？有哪些核心属性？
 
-### 使用场景
-逻辑比较复杂的模块：用户的个人信息、购物车模块、订单模块
+### 核心概念
+- **state**：全局响应式数据源，组件通过 `this.$store.state`（或 `mapState`）获取。
+- **getters**：基于 state 的派生数据，类似计算属性，可复用复杂筛选逻辑。
+- **mutations**：同步修改 state 的唯一入口，必须由 `commit` 触发；Devtools 可记录每次调用。
+- **actions**：封装异步或批处理逻辑，内部通过 `commit` 调用 mutation；支持 `async/await`。
+- **modules**：按业务拆分 store（如 `user`、`cart`），可配置 `namespaced` 避免命名冲突。
+
+### 典型使用场景
+- **全局共享状态**：如登录用户信息、权限配置、站点主题。
+- **跨多组件的数据同步**：购物车、订单列表、播放队列，多个页面都要读取/修改。
+- **复杂业务流程**：需要记录操作历史、在 Devtools 中回滚 mutation、或多人协作维护。
+- **调试与追踪要求高**：希望看到每一步状态变化来源（时间旅行、快照）。
+
+### 不建议使用的场景
+- 状态只在父子之间传递，可以用 `props/emit` 或 `provide/inject`。
+- 数据只涉及单个组件或局部逻辑，使用普通 `ref/reactive` 即可。
+- Vue 3 新项目倾向选择 **Pinia**（更轻量，直接修改 state，无需 mutation），但理解 Vuex 仍是面试常规考点。
+
+### 一句话总结
+当项目中出现“多个页面/组件需要共享状态，且需要明确的变更记录和调试工具”时，就该考虑使用 Vuex。
