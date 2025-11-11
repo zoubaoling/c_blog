@@ -1,32 +1,54 @@
-## 说说webpack中常见的Loader？解决了什么问题
-> webpack只认识js和json文件，像css|less|png等文件，在import时loader会对这些文件进行转换翻译使得webpack能继续处理。所以任何文件都可以看作模块
+## Webpack 常见 Loader 与对应问题
 
-**配置**
+> 核心思路：Webpack 只原生理解 JS/JSON。其余资源都要通过 Loader 转换成模块，因此“Loader = 转换器”。
+
+### Loader 的共性
+- **链式执行**：同一资源可配置多个 loader，从右到左（自后向前）处理。
+- **同步/异步皆可**：支持 `return` 或 `this.callback`。
+- **运行在 Node.js 环境**，只负责转换源码，不会生成额外文件（除 `emitFile`）。
+- **可组合 Plugin**：部分 loader 通过插件扩展（如 PostCSS + autoprefixer）。
+
+### 配置示例
 ```js
 module.exports = {
   module: {
     rules: [
-      { test: /\.css$/, use: [ { loader: 'style-loader' } ]}
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',      // 把 CSS 注入到 <style>
+          {
+            loader: 'css-loader',
+            options: { importLoaders: 1 }
+          },
+          'postcss-loader'     // 可自动补全前缀或启用未来语法
+        ]
+      }
     ]
   }
 }
 ```
-## 特性
-1. 链式调用，loader会处理之前已经处理过的资源。执行顺序为从右向左、从下向上
-2. 可以同步，也可以是异步
-3. plugin可以为Loader带来更多的特性
-4. 运行在NodeJS中
-5. 转换和预处理功能：ts > js; sass/scss > css
-6. 将非JS文件模块化
-  
-### 常见的loader
-- `style-loader` 将css通过注入style标签添加到DOM，结合css-loader，将其生成的内容，用style挂载到head中
-- `css-loader` 解析CSS文件中@import和url()为import/require() 方式，解析它们所依赖的资源并合并成一个CSS
-- `less-loader` less > css
-- `sass-loader` sass > css
-- `postcss-loader` 用postcss来处理CSS,自动化添加浏览器前缀(plugin: autoprefixer)、使用最新的CSS语法（转换向下兼容）(plugin: postcss-plugin-env)、优化压缩(plugin: cassnano)
-   - 结合各种插件: postcss.config.js postcss-loader>options>postcssOptions>plugins
-- `file-loader`: 把识别出的资源模块(图片、字体)，移动到指定的输出⽬目录，并返回这输出目录的地址(字符串)
-- `url-loader`: 可以做file-loader所有事情，但是可以设置文件limit大小限制，小于限制可以转成base64格式的字符串并打包到JS中（1M: 1024 * 1024）
-- `babel-loader`: ES6+ 的代码转换成向后兼容的JS代码，兼容旧的浏览器或环境
-- `html-minify-loader`: 压缩HTML
+
+### 常见 Loader 及解决的问题
+
+| Loader | 主要作用 | 解决的问题 / 补充说明 |
+| --- | --- | --- |
+| `style-loader` | 将编译后的 CSS 通过 `<style>` 标签插入页面 | 适合开发环境热更新；生产可换成 `MiniCssExtractPlugin.loader` 抽离 CSS |
+| `css-loader` | 解析 `@import` / `url()`，将 CSS 转换为 JS 模块 | 让 CSS 可以和 JS 一样被 `import`，并处理依赖关系 |
+| `less-loader` / `sass-loader` | 预处理语言 → CSS | 支持 Less/Sass 语法；常与 `postcss-loader`、`css-loader` 搭配 |
+| `postcss-loader` | 利用 PostCSS 插件对 CSS 做二次处理 | 常用插件：`autoprefixer`（补前缀）、`postcss-preset-env`（启用未来语法）、`cssnano`（压缩） |
+| `babel-loader` | 调用 Babel 将 ES6+/TSX 等转换成兼容 JS | 解决兼容性问题，可结合 `@babel/preset-env`、`core-js` 做按需 polyfill |
+| `ts-loader` / `babel-loader` + `@babel/preset-typescript` | TypeScript → JS | 选择 TS 官方编译器或 Babel 方案；根据需求决定类型检查方式 |
+| `file-loader`（Webpack 5 推荐 `type: 'asset/resource'`） | 将文件复制到输出目录，返回 URL | 处理图片、字体等静态资源，支持自定义文件名与路径 |
+| `url-loader`（Webpack 5 推荐 `type: 'asset/inline'`） | 小文件内联为 base64，大文件走 file-loader | 减少请求数，同时保留按大小分流的能力 |
+| `html-loader` / `html-minify-loader` | 解析 HTML 中的资源引用、可压缩 HTML | 配合 `HtmlWebpackPlugin` 使用，支持压缩、处理 `<img src>` 等 |
+| `vue-loader` / `@ngtools/webpack` 等 | 解析框架单文件组件 | 让 `.vue`、`.svelte` 等文件被识别并分离出模板、脚本、样式 |
+| `raw-loader` / `json5-loader` 等 | 将任意文本/格式转成字符串/对象 | 适合加载自定义文本、配置文件等 |
+
+### 面试回答模板
+1. 先说明 Loader 的职责（资源转换）+ 执行顺序（链式，从右到左）。
+2. 按类别举例：样式相关（style/css/postcss）、预处理（less/sass）、脚本（babel/ts）、资源（url/file）、模板（html/vue）。
+3. 补充 Loader 的典型场景/问题：兼容性、减少请求、模块化资源、支持框架等。
+4. 若被追问，可深入讲 `postcss-loader` 插件配置、`url-loader` 的 `limit` 参数、Webpack5 的 `asset module` 替代等。
+
+掌握这些 Loader 的用途与搭配方式，就能在面试中快速展示对 Webpack 构建链路的理解。

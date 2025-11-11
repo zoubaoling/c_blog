@@ -1,51 +1,67 @@
-## 说说webpack中常见的Plugin？解决了什么问题
-> plugin赋予其各种灵活的功能，解决loader无法实现的其他事, 运行在webpack的不同阶段（钩子/生命周期），贯穿了webpack整个编译周期
+## Webpack 常见 Plugin 与解决问题
 
-**解决的问题**
-  - 环境变量注入
-  - 代码分割
-  - 自动刷新和HMR
-  - 优化资源，打包优化
-  - 生成静态资源
+> Plugin 负责扩展 Webpack 的编译流程。与 loader 只处理单个文件不同，插件能够在任意生命周期钩子上注入逻辑，完成优化、生成资源、注入变量等任务。
 
-**配置**
+### Plugin 的共性
+- **基于钩子系统**：Webpack 使用 tapable 广播事件，插件可在 `compiler` 或 `compilation` 的任意阶段介入。
+- **高度可定制**：可以自动化清理目录、生成 HTML、注入环境变量、压缩代码、按需拆分 chunk 等。
+- **与 Loader 协同**：Loader 转换文件，Plugin 统筹整个构建流程，处理 Loader 无法覆盖的场景。
+
+### 配置示例
 ```js
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
 module.exports = {
-  ...
   plugins: [
-    new HtmlWebpackPlugin({template: ''})
+    new HtmlWebpackPlugin({ template: './public/index.html' }),
+    new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' })
   ]
 }
 ```
-### 特性
-1. `钩子系统`：Webpack提供了一个丰富的钩子系统，允许插件在构建过程的不同阶段介入，执行操作（如优化、定义变量等）
-2. `定制性和灵活性`：通过插件，可以定制和扩展Webpack的功能，包括但不限于加载、打包、输出等过程
-3. `自动化任务`：插件可以自动化许多构建相关的任务，提高效率，减少重复劳动
 
-### 常见的Plugin
-- `HtmlWebpackPlugin`: 打包结束后，根据指定模版文件⾃动生成⼀个html文件，并把打包生成的js和CSS模块引⼊到html中---title filename template <%=htmlWebpackPlugin.options.XXX%>
-- `clean-webpack-plugin`: 每次构建前清理/删除构建文件夹，保证输出目录中只有用到的文件
-- `mini-css-extract-plugin`: 提取 CSS 到一个单独的文件中--MiniCssExtractPlugin.loader; new MiniCssExtractPlugin({ filename: '[name].css' })
-- `copy-webpack-plugin`: 复制文件或目录到构建目录-- from to globOptions.ignore; vue-cli中需要手动添加(可用于各种类型的文件，file-loader主要用于特定的文件，如：图片、字体文件)
-- `DefinePlugin`: 在编译时创建配置的全局对象，是一个webpack内置的插件，不需要安装--- new DefinePlugin({ BASE_URL: './' }) >>> `<link rel="icon" href="<%= BASE_URL%>favicon.ico>" />`
-- `terser-webpack-plugin`: 压缩JS，移除无用代码。
-- `optimize-css-assets-webpack-plugin`: 优化和压缩CSS资源
-- `HotModuleReplacementPlugin`: HMR
+### 常见 Plugin 速查
 
+| 插件 | 主要解决的问题 | 关键点 |
+| --- | --- | --- |
+| `HtmlWebpackPlugin` | 打包时自动生成 HTML，并注入打包后的 JS/CSS | 支持模板、title、meta 注入；与 `html-loader` 结合处理资源引用 |
+| `CleanWebpackPlugin`（或 `output.clean: true`） | 构建前清理旧文件，保持输出目录整洁 | 避免遗留历史构建产物 |
+| `DefinePlugin`（内置） | 在编译阶段注入全局常量，如环境变量 | 值会被直接替换到代码里，需使用 JSON.stringify |
+| `MiniCssExtractPlugin` | 将 CSS 抽离成独立文件，便于缓存 | 开发用 `style-loader`，生产用该插件抽离 |
+| `HotModuleReplacementPlugin`（内置） | 支持 HMR，提升开发体验 | 结合 devServer，实现代码热替换 |
+| `TerserWebpackPlugin` | 压缩 JS（Webpack5 默认使用） | 支持去除 console、多线程压缩、source map 控制 |
+| `CssMinimizerPlugin`（Webpack5 推荐） | 压缩 CSS，替代旧的 `optimize-css-assets-webpack-plugin` | 与 `MiniCssExtractPlugin` 联合使用 |
+| `CopyWebpackPlugin` | 原样复制静态资源到输出目录 | 适合公共文件、第三方库、mock 数据等 |
+| `BundleAnalyzerPlugin` | 分析 bundle 体积，查定位量大包 | 构建后生成可视化报告 |
+| `ProvidePlugin`（内置） | 解决全局变量引入（如 $、React 等） | 避免手动 import，但不建议滥用 |
+| `CompressionWebpackPlugin` | 生成 gzip/br 压缩文件，供服务器按需开启 | 生产环境常用，配合 CDN/服务器配置 |
 
-### 实现
-本质是一个包含apply方法的js对象，会被webpack compiler调用，整个编译声明周期都可以访问编译对象
+### Plugin 编写示例
 ```js
-const pluginName = 'ConsoleLogOnBuildWebpackPlugin';
-class ConsoleLogOnBuildWebpackPlugin {
+class ConsoleLogPlugin {
   apply(compiler) {
-    // hooks.entry-option|run|compile|compilation||after-compile|emit|after-emit|done|failed
-    compiler.hooks.run.tap(pluginName, (compilation) => {
-      console.log('webpack 构建过程开始！');
-    });
+    compiler.hooks.run.tap('ConsoleLogPlugin', () => {
+      console.log('[Webpack] 构建开始…')
+    })
+
+    compiler.hooks.done.tap('ConsoleLogPlugin', stats => {
+      const time = stats.endTime - stats.startTime
+      console.log(`[Webpack] 构建结束，用时 ${time}ms`)
+    })
   }
 }
-module.exports = ConsoleLogOnBuildWebpackPlugin;
+module.exports = ConsoleLogPlugin
 ```
+
+- `compiler`：全局编译对象。常用钩子有 `run`、`compile`、`emit`、`done`。
+- `compilation`：某一次构建的上下文。可在 `compilation.hooks.processAssets.tap` 等处读取/修改产物。
+
+### 面试应答模板
+1. 先说明 Loader vs Plugin 的职责差异（Loader 转换文件，Plugin 扩展流程）。
+2. 按功能举例：**生成 HTML**、**抽离 CSS**、**压缩优化**、**注入环境变量**、**分析 bundle** 等。
+3. 若被深挖，描述 tapable 钩子机制：`compiler.hooks.xxx.tap('PluginName', handler)`。
+4. 分享实践经验：如生产构建 `MiniCssExtractPlugin + CssMinimizerPlugin`、`DefinePlugin` 注入环境变量、`BundleAnalyzerPlugin` 排查包体积等。
+
+掌握这些插件的作用与搭配方式，可在面试中快速阐述 Webpack 构建链路的优化思路。
 
 
